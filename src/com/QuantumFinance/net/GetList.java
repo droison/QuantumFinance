@@ -14,7 +14,7 @@ public class GetList implements Runnable {
 	private Context mContext;
 	private Handler mHandler;
 	private String url;
-	private int type;// 1为壁纸，2为锁屏，3为视频,4为评论,5为PPT，6为返回的热门标签
+	private int type;// 1为稳健型，2为激进型，3为推荐页PPT，4是获取文章列表
 	private String TAG = "GetList";
 
 	public GetList(Context mContext, Handler mHandler, String url, int type) {

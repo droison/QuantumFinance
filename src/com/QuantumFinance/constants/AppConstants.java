@@ -26,7 +26,11 @@ public class AppConstants {
 	public interface HTTPURL{
 		public static final String checkVersion = "http://code.taobao.org/svn/versioncontrol/trunk/lzversion";
 		
-		public static final String serverIP = "http://115.28.229.188";
+		public static final String serverIP = "http://42.121.104.18:8089";
+		public static final String wenjian = serverIP + "/terminal_interface/promoted_products.json?type=solid&page=1&per_page=10"; //GET 地址写死了
+		public static final String jijin = serverIP + "/terminal_interface/promoted_products.json?type=radical&page=1&per_page=10";  //GET 地址写死了
+	    public static final String ppt = serverIP + "";
+	    public static final String paperlistUrl = serverIP + "";
 	}
 	
 }

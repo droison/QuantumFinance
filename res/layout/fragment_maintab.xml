@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:background="#FFFFFFFF"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/bottom_tab_layout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/bottom_tab_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="推广产品"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_tab_layout2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/bottom_tab_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="专家点评"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_tab_layout3"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/bottom_tab_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="历史回顾"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_tab_layout4"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/bottom_tab_text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="个人中心"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+</LinearLayout>
