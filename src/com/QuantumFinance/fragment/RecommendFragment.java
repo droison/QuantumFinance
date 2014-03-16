@@ -17,7 +17,8 @@ import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.AsyncImageLoader;
 import com.QuantumFinance.net.AsyncImageLoader.ImageCallback;
-import com.QuantumFinance.net.GetList;
+import com.QuantumFinance.net.GetData;
+import com.QuantumFinance.net.base.RecommendBase;
 import com.QuantumFinance.ui.MainActivity;
 import com.QuantumFinance.ui.R;
 import com.QuantumFinance.ui.adapter.RecommendAdapter;
@@ -55,8 +56,8 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 	private AsyncImageLoader asynImageLoader;
 
 	private RecommendAdapter recommendAdapter;
-	private int type = 1; // 1是稳健型，2是激进型 激进型=radical，稳健型＝solid
-	
+	private int type = 2; // 1是稳健型，2是激进型 激进型=radical，稳健型＝solid
+
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			viewPager.setCurrentItem(currentItem);
@@ -73,8 +74,8 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 	}
 
 	private void initData() {
-		ThreadExecutor.execute(new GetList(parentActivity, pptHandler, pptUrl, 5));
-		ThreadExecutor.execute(new GetList(parentActivity, recommendListHandler, serverUrl, 1));
+		ThreadExecutor.execute(new GetData(parentActivity, pptHandler, pptUrl, 3));
+		ThreadExecutor.execute(new GetData(parentActivity, recommendListHandler, serverUrl, 1));
 		dialogUtil.showProgressDialog(parentActivity, "正在更新数据...");
 	}
 
@@ -115,6 +116,7 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 				Toast.makeText(parentActivity, "ppt访问出错", 1).show();
 				break;
 			case AppConstants.HANDLER_MESSAGE_NONETWORK:
+				dialogUtil.showNoNetWork(parentActivity);
 				break;
 			}
 		};
@@ -122,8 +124,7 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 
 	public void setUpView() {
 
-		if (getActivity() != null && getActivity() instanceof MainActivity)
-			parentActivity = (MainActivity) getActivity();
+		parentActivity = (MainActivity) getActivity();
 
 		if (parentActivity == null)
 			return;
@@ -139,6 +140,8 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 
 	private void setUpListener() {
 		viewPager.setOnPageChangeListener(new MyPageChangeListener());
+		recommend_tab_layout2.setOnClickListener(this);
+		recommend_tab_layout1.setOnClickListener(this);
 	}
 
 	@Override
@@ -158,10 +161,22 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 			dialogUtil.dismissProgressDialog();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
-
+				List<RecommendBase> rbs = (List<RecommendBase>) msg.obj;
+				if (rbs == null || rbs.size() == 0) {
+					Toast.makeText(parentActivity, "没有数据", Toast.LENGTH_SHORT).show();
+				} else {
+					recommend_list.removeAllViews();
+					recommendAdapter = new RecommendAdapter(rbs, parentActivity);
+					int count = recommendAdapter.getCount();
+					for (int i = 0; i < count; i++) {
+						View v = recommendAdapter.getDropDownView(i, null, null);
+						recommend_list.addView(v);
+					}
+					switchTab();
+				}
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
-				Toast.makeText(parentActivity, "网络访问出错", 1).show();
+				Toast.makeText(parentActivity, "网络访问出错", Toast.LENGTH_SHORT).show();
 				break;
 			case AppConstants.HANDLER_MESSAGE_NONETWORK:
 				dialogUtil.showNoNetWork(parentActivity);
@@ -259,14 +274,26 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 		switch (arg0.getId()) {
 		case R.id.recommend_tab_layout2:
 			if (type == 1) {
-
+				dialogUtil.showProgressDialog(parentActivity, "正在获取数据...");
+				ThreadExecutor.execute(new GetData(parentActivity, recommendListHandler, serverUrl, 2));
 			}
 			break;
 		case R.id.recommend_tab_layout1:
 			if (type == 2) {
-
+				dialogUtil.showProgressDialog(parentActivity, "正在获取数据...");
+				ThreadExecutor.execute(new GetData(parentActivity, recommendListHandler, serverUrl, 1));
 			}
 			break;
+		}
+	}
+
+	private void switchTab() {
+		if (type == 1) {
+			// 切换tab样式
+			type = 2;
+		} else {
+			// 切换tab样式
+			type = 1;
 		}
 	}
 

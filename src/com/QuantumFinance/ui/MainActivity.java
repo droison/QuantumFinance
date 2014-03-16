@@ -2,6 +2,7 @@ package com.QuantumFinance.ui;
 
 import com.QuantumFinance.BaiduMTJ.BaiduMTJFragmentActivity;
 import com.QuantumFinance.Thread.ThreadExecutor;
+import com.QuantumFinance.fragment.HistoryFragment;
 import com.QuantumFinance.fragment.MainTabFragment;
 import com.QuantumFinance.fragment.PaperListFragment;
 import com.QuantumFinance.fragment.RecommendFragment;
@@ -19,17 +20,16 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 
 	private TitleBarFragment titleBarFragment;
 	private MainTabFragment mainTabFragment;
-	private FragmentManager fm;
-	private FragmentTransaction ft;
 	private RecommendFragment recommendFragment;
 	private PaperListFragment paperListFragment;
+	private HistoryFragment historyFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setUp();
-		
+
 		UpdateHandler updateHandler = new UpdateHandler(this);
 		ThreadExecutor.execute(new CheckVersionService(this, updateHandler));
 	}
@@ -37,24 +37,21 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 	private void setUp() {
 		titleBarFragment = new TitleBarFragment();
 		mainTabFragment = new MainTabFragment();
-		fm = getSupportFragmentManager();
-		ft = fm.beginTransaction();
-
-		ft.replace(R.id.main_title_frame, titleBarFragment);
-		ft.replace(R.id.main_tab_frame, mainTabFragment);
-		ft.commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.main_title_frame, titleBarFragment).commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.main_tab_frame, mainTabFragment).commit();
 	}
-	
-	private long backTime=0;
+
+	private long backTime = 0;
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-		if(keyCode == KeyEvent.KEYCODE_BACK){
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			long curTime = System.currentTimeMillis();
-			if(curTime-backTime>2000){
+			if (curTime - backTime > 2000) {
 				backTime = curTime;
 				Toast.makeText(this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
-			}else{
+			} else {
 				finish();
 			}
 		}
@@ -73,43 +70,41 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 	public void switchContent(int tabnum) {
 		titleBarFragment.setTitleText(tabnum);
 		mainTabFragment.switchTab(tabnum);
-	    switch (tabnum) {
+		switch (tabnum) {
 		case 1:
-			if(recommendFragment==null){
-				
-			}else{
-				ft.replace(R.id.main_content_frame, recommendFragment);
-				ft.commit();
+			if (recommendFragment == null) {
+				recommendFragment = new RecommendFragment();
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, recommendFragment).commit();
+			} else {
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, recommendFragment).commit();
 			}
 			break;
 		case 2:
-			if(paperListFragment==null){
-				
-			}else{
-				ft.replace(R.id.main_content_frame, paperListFragment);
-				ft.commit();
+			if (paperListFragment == null) {
+				paperListFragment = new PaperListFragment();
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, paperListFragment).commit();
+			
+			} else {
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, paperListFragment).commit();
 			}
 			break;
 		case 3:
-			if(recommendFragment==null){
-				
-			}else{
-				ft.replace(R.id.main_content_frame, recommendFragment);
-				ft.commit();
+			if (historyFragment == null) {
+				historyFragment = new HistoryFragment();
+			} else {
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, historyFragment).commit();
 			}
 			break;
 		case 4:
-			if(recommendFragment==null){
-				
-			}else{
-				ft.replace(R.id.main_content_frame, recommendFragment);
-				ft.commit();
+			if (recommendFragment == null) {
+
+			} else {
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, recommendFragment).commit();
 			}
 			break;
 		default:
 			break;
 		}
 	}
-	
 
 }

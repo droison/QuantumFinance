@@ -59,32 +59,39 @@ public class StringUtil {
 		inStream.close();
 		return outStream.toByteArray();
 	}
-	
-	public static boolean checkPhone(String phone){
-        Pattern pattern = Pattern.compile("^13/d{9}||15[8,9]/d{8}$");
-        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-        Matcher matcher = p.matcher(phone);
-        
-        if (matcher.matches()) {
-            return true;
-        }
-        return false;
-    }
-	
-	public static boolean checkpasswd(String passwd){
 
-        Pattern p = Pattern.compile("^.{6}$");
-        Matcher matcher = p.matcher(passwd);
-        
-        if (matcher.matches()) {
-            return true;
-        }
-        return false;
-    }
-	
-	//去除引号和逗号
-	public static String delOper(String input){
-		if(input == null)
+	public static boolean checkEmail(String email) {
+		Pattern p = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
+		Matcher m = p.matcher(email);
+		// Mather m = p.matcher("wangxu198709@gmail.com.cn");这种也是可以的！
+		return m.matches();
+	}
+
+	public static boolean checkPhone(String phone) {
+		Pattern pattern = Pattern.compile("^13/d{9}||15[8,9]/d{8}$");
+		Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+		Matcher matcher = p.matcher(phone);
+
+		if (matcher.matches()) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean checkpasswd(String passwd) {
+
+		Pattern p = Pattern.compile("^.{6}$");
+		Matcher matcher = p.matcher(passwd);
+
+		if (matcher.matches()) {
+			return true;
+		}
+		return false;
+	}
+
+	// 去除引号和逗号
+	public static String delOper(String input) {
+		if (input == null)
 			return null;
 		input = input.replace("“", "");
 		input = input.replace("”", "");

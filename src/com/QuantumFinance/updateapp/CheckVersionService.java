@@ -4,8 +4,8 @@ package com.QuantumFinance.updateapp;
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.HTTP;
 import com.QuantumFinance.net.base.HttpResponseEntity;
-import com.QuantumFinance.util.JsonUtil;
 import com.QuantumFinance.util.StringUtil;
+import com.alibaba.fastjson.JSON;
 
 import android.content.Context;
 import android.os.Handler;
@@ -26,12 +26,13 @@ public class CheckVersionService implements Runnable {
     		HttpResponseEntity hre = HTTP.get(AppConstants.HTTPURL.checkVersion);
     		if(hre == null){
     			mHandler.sendEmptyMessage(AppConstants.HANDLER_HTTPSTATUS_ERROR);
+    			return;
     		}
     		switch (hre.getHttpResponseCode()) {
     		case 200:
     			try {
     				String json = StringUtil.byte2String(hre.getB());
-    				CheckVersionBase cvb = (CheckVersionBase) JsonUtil.jsonToObject(json, CheckVersionBase.class);
+    				CheckVersionBase cvb = (CheckVersionBase) JSON.parseObject(json, CheckVersionBase.class);
 
     	            int versionCode = context.getPackageManager().getPackageInfo("com.QuantumFinance.ui", 0).versionCode; 	            
 

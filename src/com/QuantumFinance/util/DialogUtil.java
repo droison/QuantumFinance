@@ -13,10 +13,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class DialogUtil {
@@ -57,6 +53,10 @@ public class DialogUtil {
 		if (downloadDialog != null) {
 			downloadDialog.dismiss();
 		}
+	}
+	
+	public void showToast(Activity activity,String msg){
+		
 	}
 
 	public void showNoNetWork(Activity activity) {

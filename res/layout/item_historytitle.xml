@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/item_historytitle_y"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/item_historytitle_hight"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical|right"
+        android:text="2014年" />
+
+    <TextView
+        android:id="@+id/item_historytitle_md"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/item_historytitle_hight"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="3"
+        android:gravity="center_vertical|left"
+        android:text="2月28日" />
+
+</LinearLayout>

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 
 public class BaiduMTJActivity extends Activity {
+	
+	protected final int RESULT_FAILE = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

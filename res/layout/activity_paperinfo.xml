@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/main_title_hight"
+        android:background="@drawable/title_bg" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="5.0dip" >
+
+            <ImageView
+                android:layout_width="30.0dip"
+                android:layout_height="30.0dip"
+                android:background="@drawable/title_one_back"
+                android:onClick="finishView" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="文章详情"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/main_tab_hight"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFFFF"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/paperinfo_tab_layout1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/paperinfo_tab_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="分享"
+                android:textColor="@color/black"
+                android:textSize="@dimen/bottom_tab_text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/paperinfo_tab_layout2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/paperinfo_tab_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="收藏"
+                android:textColor="@color/black"
+                android:textSize="@dimen/bottom_tab_text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/paperinfo_tab_layout3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/paperinfo_tab_text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="评论"
+                android:textColor="@color/black"
+                android:textSize="@dimen/bottom_tab_text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/paperinfo_tab_layout4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/paperinfo_tab_text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="赞"
+                android:textColor="@color/black"
+                android:textSize="@dimen/bottom_tab_text" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.QuantumFinance.ui.component.PullToRefreshView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/paperinfo_pullview"
+        android:layout_marginBottom="@dimen/main_tab_hight"
+        android:layout_marginTop="@dimen/main_title_hight"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/paperinfo_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/image_default" />
+
+                <TextView
+                    android:id="@+id/paperinfo_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="王表带的" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/paperinfo_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="fffffssdsd" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/paperinfo_comment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="评论:18" />
+
+                        <TextView
+                            android:id="@+id/paperinfo_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="浏览:266" />
+
+                        <TextView
+                            android:id="@+id/paperinfo_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="03-07 05:34" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/paperinfo_comment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </com.QuantumFinance.ui.component.PullToRefreshView>
+
+</RelativeLayout>

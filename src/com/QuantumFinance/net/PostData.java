@@ -2,7 +2,9 @@ package com.QuantumFinance.net;
 
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.HttpResponseEntity;
+import com.QuantumFinance.net.base.Result;
 import com.QuantumFinance.util.StringUtil;
+import com.alibaba.fastjson.JSON;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -15,7 +17,7 @@ public class PostData implements Runnable {
 	private Handler mHandler;
 	private String url;
 	private Object obj;
-	private int type; 
+	private int type; //type =1 评论
 	private String TAG = "PostData";
 
 	public PostData(Context mContext, Handler mHandler, Object obj, int type) {
@@ -23,6 +25,7 @@ public class PostData implements Runnable {
 		this.mHandler = mHandler;
 		switch (type) {
 		case 1:
+			this.url = AppConstants.HTTPURL.commentpost;
 			break;
 		default:
 			break;
@@ -52,6 +55,8 @@ public class PostData implements Runnable {
 				Log.e(TAG, "type="+type+";JSON：" + json);
 				switch (type) {
 				case 1:
+					Result result = JSON.parseObject(json,Result.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, result));
 					break;
 				default:
 					break;

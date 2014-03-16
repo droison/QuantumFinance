@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 分享相关 -->
+    <string name="cancel">取消</string>
+    <string name="finish">完成</string>
+    <string name="sharing">分享操作正在后台进行…</string>
+    <string name="share_to">分享到</string>
+    <string name="share">分享</string>
+    <string name="multi_share">图文分享</string>
+    <string name="share_completed">分享成功</string>
+    <string name="share_canceled">分享已取消</string>
+    <string name="select_one_plat_at_least">请选择一个目标平台</string>
+    <string name="list_friends">%s的朋友</string>
+    <string name="share_failed">分享失败</string>
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="release_to_refresh">松开刷新</string>
+    <string name="refreshing">刷新中…</string>
+    <string name="share_content">量子财经，教会你理财！</string>
+
+    <!-- 应用主要 -->
+
     <string name="app_name">量子财经</string>
     <string name="offline_text1">网络不给力呀</string>
     <string name="offline_text2">请检查网络连接</string>
@@ -22,5 +41,33 @@
     <string name="about_weburl">www.qingyigu.com</string>
     <string name="about_phone">010-12345678</string>
     <string name="about_other">xxxxxxxxxxxx</string>
+
+    <!-- 登录注册 -->
+    <string name="login_phonenum">手机号：</string>
+    <string name="login_password">密码：</string>
+    <string name="login_hint_phone">请输入手机号</string>
+    <string name="login_hint_pass">请输入密码</string>
+    <string name="login_lost_pass">忘记密码</string>
+    <string name="login_login">登录</string>
+    <string name="login_register">马上注册</string>
+    <string name="login_other_login">使用第三方帐号登录</string>
+    <string name="login_weibo">新浪微博</string>
+    <string name="login_weixin">微信</string>
+    <string name="login_qq">腾讯QQ</string>
+    <string name="reg_username">用户名：</string>
+    <string name="reg_hint_username">请输入用户名</string>
+    <string name="reg_pass">密码：</string>
+    <string name="reg_hint_pass">请输入密码</string>
+    <string name="reg_email">邮箱：</string>
+    <string name="reg_hint_email">请输入邮箱</string>
+    <string name="reg_repass">确认：</string>
+    <string name="reg_hint_repass">请再次输入密码</string>
+    <string name="reg_phone">手机：</string>
+    <string name="reg_hint_phone">请输入您的手机</string>
+    <string name="reg_check">验证</string>
+    <string name="reg_checknum">验证码：</string>
+    <string name="reg_hint_checknum">请输入手机验证码</string>
+    <string name="reg_login">马上登录</string>
+    <string name="reg_reg">注册</string>
 
 </resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/main_tab_hight"
+    android:background="#FFFFFFFF"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/paper_tab_layout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/paper_tab_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="分享"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/paper_tab_layout2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/paper_tab_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="收藏"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/paper_tab_layout3"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/paper_tab_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="评论"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/paper_tab_layout4"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/paper_tab_text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="赞"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bottom_tab_text" />
+    </RelativeLayout>
+
+</LinearLayout>

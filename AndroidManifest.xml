@@ -22,14 +22,18 @@
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.PREVENT_POWER_KEY" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
 
     <application
+        android:label="@string/app_name"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
 
         <!-- 您从百度网站获取的APP KEY -->
@@ -69,16 +73,38 @@
             android:name="BaiduMobAd_WIFI_LOCATION"
             android:value="true" />
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+         <activity android:name=".RecommendInfoActivity" />
+         <activity android:name=".PaperInfoActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".LostPwdActivity" />
+        <activity android:name=".RegisterActicity" />
+        <activity android:name=".SetActivity" />
+        <activity
+            android:name=".CommentActivity"
+            android:theme="@style/MyActivityDialog" >
+        </activity>
         <activity android:name=".TextViewActivity" />
+        
+        
+         <!-- 为了授权操作可以顺利完成，需要在application下注册下面的Activity -->
+        <activity
+            android:name="cn.sharesdk.framework.ShareSDKUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!-- 如果您的项目集微信或者微信朋友圈，则需要在application下注册下面的回调Activity -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

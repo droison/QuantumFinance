@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp" >
+
+    <ImageView
+        android:id="@+id/item_paper_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/image_default" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" >
+
+            <LinearLayout
+                android:id="@+id/item_paper_bottomlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/item_paper_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="评论：18" />
+
+                <TextView
+                    android:id="@+id/item_paper_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="浏览：266" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/item_paper_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="fffffssdsd" />
+
+            <TextView
+                android:id="@+id/item_paper_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/item_paper_bottomlayout"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/item_paper_title"
+                android:text="fffffssdsd" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>
