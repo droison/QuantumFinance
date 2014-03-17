@@ -86,6 +86,7 @@
         <activity android:name=".LostPwdActivity" />
         <activity android:name=".RegisterActicity" />
         <activity android:name=".SetActivity" />
+        <activity android:name=".AboutActivity" />
         <activity
             android:name=".CommentActivity"
             android:theme="@style/MyActivityDialog" >

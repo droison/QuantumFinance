@@ -40,7 +40,7 @@ import android.widget.Toast;
 
 public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 
-	private RelativeLayout set_closelock, set_startlock, set_headlayout, set_nicklayout, set_emaillayout, set_phonelayout, set_pwdlayout, set_snslayout;
+	private RelativeLayout set_headlayout, set_nicklayout, set_emaillayout, set_phonelayout, set_pwdlayout, set_snslayout;
 	private ImageView set_headimg;
 	private TextView set_nicktext, set_phonetext, set_emailtext, set_logout, set_login;
 	private LinearLayout set_snsiconlayout, set_loginlayout, set_logoutlayout;
@@ -133,8 +133,6 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 	}
 
 	private void setUpListener() {
-		set_closelock.setOnClickListener(this);
-		set_startlock.setOnClickListener(this);
 		set_headlayout.setOnClickListener(this);
 		set_nicklayout.setOnClickListener(this);
 		set_phonelayout.setOnClickListener(this);

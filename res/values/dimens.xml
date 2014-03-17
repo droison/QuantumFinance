@@ -13,4 +13,6 @@
 
      <dimen name="item_history_hight">45dp</dimen>
      <dimen name="item_historytitle_hight">35dp</dimen>
+     
+     <dimen name="item_icenter_hight">60dp</dimen>
 </resources>

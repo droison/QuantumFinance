@@ -3,6 +3,7 @@ package com.QuantumFinance.ui;
 import com.QuantumFinance.BaiduMTJ.BaiduMTJFragmentActivity;
 import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.fragment.HistoryFragment;
+import com.QuantumFinance.fragment.ICenterFragment;
 import com.QuantumFinance.fragment.MainTabFragment;
 import com.QuantumFinance.fragment.PaperListFragment;
 import com.QuantumFinance.fragment.RecommendFragment;
@@ -23,6 +24,7 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 	private RecommendFragment recommendFragment;
 	private PaperListFragment paperListFragment;
 	private HistoryFragment historyFragment;
+	private ICenterFragment iCenterFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 			if (paperListFragment == null) {
 				paperListFragment = new PaperListFragment();
 				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, paperListFragment).commit();
-			
+
 			} else {
 				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, paperListFragment).commit();
 			}
@@ -96,10 +98,10 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 			}
 			break;
 		case 4:
-			if (recommendFragment == null) {
-
+			if (iCenterFragment == null) {
+				iCenterFragment = new ICenterFragment();
 			} else {
-				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, recommendFragment).commit();
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, iCenterFragment).commit();
 			}
 			break;
 		default:
