@@ -6,8 +6,11 @@ import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import com.QuantumFinance.net.GetData;
 import com.QuantumFinance.net.ShareTask;
 import com.QuantumFinance.net.AsyncImageLoader.ImageCallback;
 import com.QuantumFinance.net.base.CommentBase;
+import com.QuantumFinance.net.base.PPTBase;
 import com.QuantumFinance.net.base.PaperBase;
 import com.QuantumFinance.ui.adapter.CommentAdapter;
 import com.QuantumFinance.ui.component.PullToRefreshView;
@@ -66,6 +70,7 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 	private CollectDAO collectDAO;
 	private PraiseDAO praiseDAO;
 	private AccountDAO accountDAO;
+	private boolean isPPT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,7 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 		setContentView(R.layout.activity_paperinfo);
 		setUpView();
 		initData();
-		setUpListener();
+
 		ShareSDK.initSDK(this);
 	}
 
@@ -84,28 +89,94 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 	}
 
 	private void initData() {
-		pb = (PaperBase) getIntent().getSerializableExtra("pb");
-		sdf = new SimpleDateFormat("MM-dd hh:mm");
-		paperinfo_comment.setText("评论:" + pb.getComments());
-		paperinfo_content.setText(pb.getContent());
-		paperinfo_time.setText(sdf.format(pb.getUpdated_at()));
-		paperinfo_title.setText(pb.getTitle());
-		paperinfo_view.setText("浏览:" + pb.getView_count());
+		isPPT = getIntent().getBooleanExtra("isPPT", false);
+		if (isPPT) {
+			PPTBase pptBase = (PPTBase) getIntent().getSerializableExtra("PPTBase");
+			dialogUtil.showProgressDialog(this, "正在读取数据...");
+			ThreadExecutor.execute(new GetData(this, paperHandler, AppConstants.HTTPURL.paperInfo + pptBase.getComment_or_product_id(), 6));
+		} else {
+			pb = (PaperBase) getIntent().getSerializableExtra("pb");
+			sdf = new SimpleDateFormat("MM-dd hh:mm");
+			paperinfo_comment.setText("评论:" + pb.getComments());
 
-		imageLoader.loadDrawable(this, AppConstants.HTTPURL.serverIP + pb.getLogo(), new ImageCallback() {
-			@Override
-			public void imageLoaded(Bitmap bm, String imageUrl) {
-				paperinfo_logo.setImageBitmap(bm);
+			paperinfo_content.setText(pb.getContent());
+
+			paperinfo_time.setText(sdf.format(pb.getUpdated_at()));
+			paperinfo_title.setText(pb.getTitle());
+			if (pb.getTitle() == null || pb.getTitle().equals("")) {
+				paperinfo_title.setText("    ");
 			}
-		}, "paper", pb.getId() + "");
 
-		dialogUtil.showProgressDialog(this, "正在读取评论...");
-		ThreadExecutor.execute(new GetData(this, commentListHandler, AppConstants.HTTPURL.commentlist + pb.getId() + "&page=" + page, 7));
+			paperinfo_view.setText("浏览:" + pb.getView_count());
 
+			if (collectDAO.isExist("" + pb.getId())) {
+				paperinfo_tab_text2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_collect_press, 0, 0);
+			}
+			if (praiseDAO.isExist("" + pb.getId())) {
+				paperinfo_tab_text4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_praise_press, 0, 0);
+			}
+
+			imageLoader.loadDrawable(this, AppConstants.HTTPURL.serverIP + pb.getLogo(), new ImageCallback() {
+				@Override
+				public void imageLoaded(Bitmap bm, String imageUrl) {
+					if (bm != null) {
+						paperinfo_logo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getPicHigh(bm)));
+						paperinfo_logo.setImageBitmap(bm);
+					}
+				}
+			}, "paper", pb.getId() + "");
+
+			dialogUtil.showProgressDialog(this, "正在读取评论...");
+			ThreadExecutor.execute(new GetData(this, commentListHandler, AppConstants.HTTPURL.commentlist + pb.getId() + "&page=" + page, 7));
+			setUpListener();
+		}
 	}
 
+	private Handler paperHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			dialogUtil.dismissProgressDialog();
+			switch (msg.what) {
+			case AppConstants.HANDLER_MESSAGE_NORMAL:
+				pb = (PaperBase) msg.obj;
+				if (pb != null && pb.getId() != 0) {
+					sdf = new SimpleDateFormat("MM-dd hh:mm");
+					paperinfo_comment.setText("评论:" + pb.getComments());
+					paperinfo_content.setText(pb.getContent());
+					paperinfo_time.setText(sdf.format(pb.getUpdated_at()));
+					paperinfo_title.setText(pb.getTitle());
+					paperinfo_view.setText("浏览:" + pb.getView_count());
+					if (collectDAO.isExist("" + pb.getId())) {
+						paperinfo_tab_text2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_collect_press, 0, 0);
+					}
+					if (praiseDAO.isExist("" + pb.getId())) {
+						paperinfo_tab_text4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_praise_press, 0, 0);
+					}
+					imageLoader.loadDrawable(PaperInfoActivity.this, AppConstants.HTTPURL.serverIP + pb.getLogo(), new ImageCallback() {
+						@Override
+						public void imageLoaded(Bitmap bm, String imageUrl) {
+							if (bm != null) {
+								paperinfo_logo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getPicHigh(bm)));
+								paperinfo_logo.setImageBitmap(bm);
+							}
+						}
+					}, "paper", pb.getId() + "");
+
+					ThreadExecutor.execute(new GetData(PaperInfoActivity.this, commentListHandler, AppConstants.HTTPURL.commentlist + pb.getId() + "&page=" + page, 7));
+					setUpListener();
+				}
+				break;
+			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
+				Toast.makeText(PaperInfoActivity.this, "网络访问出错", Toast.LENGTH_SHORT).show();
+				break;
+			case AppConstants.HANDLER_MESSAGE_NONETWORK:
+				dialogUtil.showNoNetWork(PaperInfoActivity.this);
+				break;
+			}
+		};
+	};
+
 	private Handler commentListHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
+		public void handleMessage(Message msg) {
 			dialogUtil.dismissProgressDialog();
 			completeGridRefresh();
 			switch (msg.what) {
@@ -125,6 +196,8 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 					if (paperinfo_comment_layout.getChildCount() != 0)
 						Toast.makeText(PaperInfoActivity.this, "已到最后了", Toast.LENGTH_SHORT).show();
 				}
+				if (paperinfo_comment_layout.getChildCount() != 0)
+					paperinfo_comment_layout.setBackgroundResource(R.drawable.paperinfo_comment_bg);
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
 				Toast.makeText(PaperInfoActivity.this, "网络访问出错", Toast.LENGTH_SHORT).show();
@@ -151,6 +224,7 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 			public void onClick(View v) {
 				if (!collectDAO.isExist("" + pb.getId())) {
 					collectDAO.save(pb);
+					paperinfo_tab_text2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_collect_press, 0, 0);
 				}
 			}
 		});
@@ -183,6 +257,7 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				praiseDAO.save(pb.getId() + "");
+				paperinfo_tab_text4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_praise_press, 0, 0);
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
 				Toast.makeText(PaperInfoActivity.this, "网络访问出错", Toast.LENGTH_SHORT).show();
@@ -261,5 +336,13 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 			ThreadExecutor.execute(new GetData(this, commentListHandler, AppConstants.HTTPURL.commentlist + pb.getId() + "&page=" + page, 7));
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private int getPicHigh(Bitmap bm) {
+		DisplayMetrics dm = this.getResources().getDisplayMetrics();
+		int mScreenWidth = dm.widthPixels;// 屏幕宽
+		int bmHigh = bm.getHeight();
+		int bmWidth = bm.getWidth();
+		return mScreenWidth * bmHigh / bmWidth;
 	}
 }

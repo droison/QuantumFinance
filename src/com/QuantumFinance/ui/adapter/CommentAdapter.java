@@ -28,7 +28,7 @@ public class CommentAdapter extends BaseAdapter {
 	private AsyncImageLoader imageLoader;
 	private int paper_id;
 
-	public CommentAdapter(List<CommentBase> cbs,int paper_id, Activity mActivity) {
+	public CommentAdapter(List<CommentBase> cbs, int paper_id, Activity mActivity) {
 		this.cbs = cbs;
 		this.mActivity = mActivity;
 		this.layoutInflater = LayoutInflater.from(mActivity);
@@ -70,7 +70,8 @@ public class CommentAdapter extends BaseAdapter {
 		imageLoader.loadDrawable(mActivity, AppConstants.HTTPURL.serverIP + cb.getUser_avata(), new ImageCallback() {
 			@Override
 			public void imageLoaded(Bitmap bm, String imageUrl) {
-				comment_icon.setImageBitmap(bm);
+				if (bm != null)
+					comment_icon.setImageBitmap(bm);
 			}
 		}, "icon", cb.getId() + "");
 

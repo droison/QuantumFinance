@@ -37,28 +37,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:id="@+id/dot_layout"
                     android:orientation="horizontal" >
 
-                    <View
-                        android:id="@+id/v_dot0"
-                        style="@style/dot_style"
-                        android:background="@drawable/dot_focused" />
-
-                    <View
-                        android:id="@+id/v_dot1"
-                        style="@style/dot_style" />
-
-                    <View
-                        android:id="@+id/v_dot2"
-                        style="@style/dot_style" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#dddddd" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -70,7 +54,8 @@
                 android:id="@+id/recommend_tab_layout1"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@drawable/item_recommend_bg1" >
 
                 <TextView
                     android:id="@+id/recommend_tab_text1"
@@ -80,23 +65,6 @@
                     android:text="稳健型"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/recommend_tab_line1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
-                    android:background="@color/main_title_bg" />
-
-                <ImageView
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#dddddd" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -114,23 +82,8 @@
                     android:text="激进型"
                     android:textColor="@color/grey"
                     android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/recommend_tab_line2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
-                    android:background="@color/main_title_bg"
-                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#dddddd" />
 
         <LinearLayout
             android:id="@+id/recommend_list"

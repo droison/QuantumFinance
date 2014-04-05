@@ -27,7 +27,8 @@ public class PaperAdapter extends BaseAdapter {
 	private List<PaperBase> pbs;
 	private Context mContext;
 	private LayoutInflater layoutInflater;
-private AsyncImageLoader imageLoader;
+	private AsyncImageLoader imageLoader;
+
 	public PaperAdapter(List<PaperBase> pbs, Context mContext) {
 		this.pbs = pbs;
 		this.mContext = mContext;
@@ -58,20 +59,21 @@ private AsyncImageLoader imageLoader;
 		TextView item_paper_comment = (TextView) converView.findViewById(R.id.item_paper_comment);
 		TextView item_paper_view = (TextView) converView.findViewById(R.id.item_paper_view);
 		TextView item_paper_content = (TextView) converView.findViewById(R.id.item_paper_content);
-		
-		item_paper_comment.setText("评论:"+ pb.getComments());
-		item_paper_view.setText("浏览:"+ pb.getView_count());
+
+		item_paper_comment.setText("评论:" + pb.getComments());
+		item_paper_view.setText("浏览:" + pb.getView_count());
 		item_paper_content.setText(pb.getContent());
 		item_paper_title.setText(pb.getTitle());
-		
+
 		imageLoader = new AsyncImageLoader();
 		imageLoader.loadDrawable(mContext, AppConstants.HTTPURL.serverIP + pb.getLogo(), new ImageCallback() {
 			@Override
 			public void imageLoaded(Bitmap bm, String imageUrl) {
-				item_paper_logo.setImageBitmap(bm);
+				if (bm != null)
+					item_paper_logo.setImageBitmap(bm);
 			}
-		}, "paper", pb.getId()+"");
-		
+		}, "paper", pb.getId() + "");
+
 		converView.setOnClickListener(new OnClickListener() {
 
 			@Override

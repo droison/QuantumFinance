@@ -34,7 +34,7 @@ public class AppConstants {
 		public static final String wenjian = serverIP + "/terminal_interface/promoted_products.json?type=solid&page=1&per_page=10"; // GET地址写死了
 		public static final String jijin = serverIP + "/terminal_interface/promoted_products.json?type=radical&page=1&per_page=10"; // GET地址写死了
 		public static final String recommendInfo = serverIP + "/terminal_interface/show_product.json?id=";//后面跟着ID
-		public static final String ppt = serverIP + "";
+		public static final String ppt = serverIP + "/terminal_interface/get_ppt.json?per_page=10&page=1"; //后面跟着页数
 		/**
 		 * 第二页
 		 */
@@ -48,6 +48,12 @@ public class AppConstants {
 		 * 第三页
 		 */
 		public static final String history = serverIP + "/terminal_interface/products_histroy.json?per_page=10&page=";//后面跟着页码
+		
+		/**
+		 * 第四页
+		 */
+		public static final String reg = serverIP + "/users.json";  //POST user[email] user[password] user[password_confirmation]
+public static final String login = serverIP + "/users/sign_in.json";//POST user[email] user[password]
 	}
 
 }

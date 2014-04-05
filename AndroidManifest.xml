@@ -24,15 +24,15 @@
     <uses-permission android:name="android.permission.PREVENT_POWER_KEY" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
 
     <application
-        android:label="@string/app_name"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
 
@@ -73,28 +73,27 @@
             android:name="BaiduMobAd_WIFI_LOCATION"
             android:value="true" />
 
-        <activity android:name=".MainActivity" >
+        <activity android:name="com.QuantumFinance.ui.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity android:name=".RecommendInfoActivity" />
-         <activity android:name=".PaperInfoActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".LostPwdActivity" />
-        <activity android:name=".RegisterActicity" />
-        <activity android:name=".SetActivity" />
-        <activity android:name=".AboutActivity" />
+        <activity android:name="com.QuantumFinance.ui.RecommendInfoActivity" />
+        <activity android:name="com.QuantumFinance.ui.PaperInfoActivity" />
+        <activity android:name="com.QuantumFinance.ui.LoginActivity" />
+        <activity android:name="com.QuantumFinance.ui.LostPwdActivity" />
+        <activity android:name="com.QuantumFinance.ui.RegisterActivity" />
+        <activity android:name="com.QuantumFinance.ui.SetActivity" />
+        <activity android:name="com.QuantumFinance.ui.AboutActivity" />
         <activity
-            android:name=".CommentActivity"
+            android:name="com.QuantumFinance.ui.CommentActivity"
             android:theme="@style/MyActivityDialog" >
         </activity>
-        <activity android:name=".TextViewActivity" />
-        
-        
-         <!-- 为了授权操作可以顺利完成，需要在application下注册下面的Activity -->
+        <activity android:name="com.QuantumFinance.ui.TextViewActivity" />
+
+        <!-- 为了授权操作可以顺利完成，需要在application下注册下面的Activity -->
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -102,10 +101,18 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <!-- 如果您的项目集微信或者微信朋友圈，则需要在application下注册下面的回调Activity -->
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.QuantumFinance.ui.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.QuantumFinance.ui.EvaluateActivity"
+            android:label="@string/title_activity_evaluate_" >
+        </activity>
+        <activity
+            android:name="com.QuantumFinance.ui.ICollectActivity"
+            android:label="@string/title_activity_icollect" >
+        </activity>
     </application>
 
 </manifest>

@@ -90,14 +90,15 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
-		setUserInfo();
+//		setUserInfo();
 	}
 
 	private void setUserInfo() {
 		account = accountDAO.getAccount();
 		if (account == null) {
-			set_loginlayout.setVisibility(View.GONE);
-			set_logoutlayout.setVisibility(View.VISIBLE);
+			Intent toLogin = new Intent(SetActivity.this, LoginActivity.class);
+			startActivity(toLogin);
+			finish();
 		} else {
 			set_loginlayout.setVisibility(View.VISIBLE);
 			set_logoutlayout.setVisibility(View.GONE);

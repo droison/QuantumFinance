@@ -6,6 +6,7 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.CommentBase;
 import com.QuantumFinance.net.base.HistoryBase;
 import com.QuantumFinance.net.base.HttpResponseEntity;
+import com.QuantumFinance.net.base.PPTBase;
 import com.QuantumFinance.net.base.PaperBase;
 import com.QuantumFinance.net.base.RecommendBase;
 import com.QuantumFinance.net.base.RecommendInfoBase;
@@ -76,6 +77,8 @@ public class GetData implements Runnable {
 					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, rb));
 					break;
 				case 3:
+					List<PPTBase> pbs = JSON.parseArray(json, PPTBase.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, pbs));
 					break;
 				case 4:
 					List<PaperBase> pb = JSON.parseArray(json, PaperBase.class);

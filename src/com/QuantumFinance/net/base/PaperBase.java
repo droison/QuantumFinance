@@ -3,7 +3,7 @@ package com.QuantumFinance.net.base;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PaperBase implements Serializable{
+public class PaperBase implements Serializable {
 	/**
 	 * 
 	 */
@@ -19,6 +19,15 @@ public class PaperBase implements Serializable{
 	private Date created_at;// "2014-03-10T15:33:17Z",
 	private Date updated_at;// "2014-03-14T07:55:51Z",
 	private String logo;// "/system/comments/logos/000/000/003/centre/20140103_174223.jpg?1394681068"
+	private String label_name;
+
+	public String getLabel_name() {
+		return label_name;
+	}
+
+	public void setLabel_name(String label_name) {
+		this.label_name = label_name;
+	}
 
 	public int getId() {
 		return id;

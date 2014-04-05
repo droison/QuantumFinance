@@ -36,11 +36,9 @@ public class CommentActivity extends BaiduMTJActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_comment);
-
 		setUpView();
 		initData();
 		setUpListener();
-
 	}
 
 	private void setUpView() {

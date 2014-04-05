@@ -3,10 +3,14 @@ package com.QuantumFinance.ui;
 import java.util.HashMap;
 
 import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
+import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
+import com.QuantumFinance.net.PostData;
+import com.QuantumFinance.net.base.LoginBase;
 import com.QuantumFinance.net.base.LoginOrRegResult;
 import com.QuantumFinance.util.DialogUtil;
+import com.QuantumFinance.util.StringUtil;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -20,19 +24,20 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 
-	private EditText login_phone, login_password;
-	private TextView login_lostpass, login_login, login_register, login_weibo, login_qq;
+	private EditText login_email, login_password;
+	private TextView login_lostpass, login_login, login_register;
+	private ImageView  login_weibo, login_qq;
 	private DialogUtil dialogUtil;
 	private AccountDAO accountDAO;
 	private static final int REGISTERCODE = 11;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		ShareSDK.initSDK(this);
@@ -41,15 +46,14 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 
 	}
 
-	// 初始化view并初始化fragment
 	private void setUpView() {
-		login_phone = (EditText) this.findViewById(R.id.login_phone);
+		login_email = (EditText) this.findViewById(R.id.login_email);
 		login_password = (EditText) this.findViewById(R.id.login_password);
 		login_lostpass = (TextView) this.findViewById(R.id.login_lostpass);
 		login_login = (TextView) this.findViewById(R.id.login_login);
-		login_qq = (TextView) this.findViewById(R.id.login_qq);
+		login_qq = (ImageView) this.findViewById(R.id.login_qq);
 		login_register = (TextView) this.findViewById(R.id.login_register);
-		login_weibo = (TextView) this.findViewById(R.id.login_weibo);
+		login_weibo = (ImageView) this.findViewById(R.id.login_weibo);
 
 		login_lostpass.setOnClickListener(this);
 		login_login.setOnClickListener(this);
@@ -136,19 +140,19 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 			qq.showUser(null);
 			break;
 		case R.id.login_login:
-			String phone = login_phone.getText().toString();
+			String email = login_email.getText().toString();
 			String password = login_password.getText().toString();
-			if (TextUtils.isEmpty(phone)) {
-				dialogUtil.showToast(this, "手机号不能为空");
+			if (TextUtils.isEmpty(email)) {
+				dialogUtil.showToast(this, "邮箱不能为空");
 			} else if (TextUtils.isEmpty(password)) {
 				dialogUtil.showToast(this, "密码不能为空");
-			} else if (phone.length() != 11) {
-				dialogUtil.showToast(this, "手机号格式错误");
+			} else if (!StringUtil.checkEmail(email)) {
+				dialogUtil.showToast(this, "邮箱格式错误");
 			} else {
 				dialogUtil.showProgressDialog(this, "正在登录");
 
-				
-				//运行登录注册线程
+				LoginBase lb = new LoginBase(email, password);
+				ThreadExecutor.execute(new PostData(LoginActivity.this, loginHandler, lb, 3));
 			}
 			break;
 		case R.id.login_lostpass:
@@ -160,7 +164,7 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 	
 	private Handler loginHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			dialogUtil.dismissDownloadDialog();
+			dialogUtil.dismissProgressDialog();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				LoginOrRegResult.Login loginResult= (LoginOrRegResult.Login)msg.obj;

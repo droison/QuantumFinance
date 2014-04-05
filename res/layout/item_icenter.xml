@@ -9,6 +9,7 @@
         android:layout_height="@dimen/item_icenter_hight"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
+        android:background="@color/icenter_item_bg"
         android:orientation="horizontal" >
 
         <ImageView
@@ -16,16 +17,28 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:src="@drawable/set_sinaicon" />
+            android:background="@drawable/recommendinfo_title_bg"
+            android:paddingBottom="15dp"
+            android:scaleType="fitCenter"
+            android:paddingTop="15dp"
+            android:src="@drawable/icenter1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/recommendinfo_title_bg2" />
 
         <TextView
             android:id="@+id/item_icenter_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="18:30" />
+            android:text="我的帐号"
+            android:textColor="@color/paperinfo_text"
+            android:textSize="22sp" />
     </LinearLayout>
 
 </LinearLayout>

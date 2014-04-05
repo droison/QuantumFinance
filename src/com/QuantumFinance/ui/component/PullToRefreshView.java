@@ -637,4 +637,12 @@ public class PullToRefreshView extends LinearLayout {
 		isFooterRefresh = flag;
 	}
 
+	public boolean isFooterRefresh() {
+		return isFooterRefresh;
+	}
+
+	public void setFooterRefresh(boolean isFooterRefresh) {
+		this.isFooterRefresh = isFooterRefresh;
+	}
+
 }

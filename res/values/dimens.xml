@@ -4,15 +4,19 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="main_title_hight">45dp</dimen>
-    <dimen name="main_tab_hight">40dp</dimen>
+    <dimen name="main_tab_hight">55dp</dimen>
+    <dimen name="main_title_text">20sp</dimen>
+    <dimen name="main_tab_padding">3dp</dimen>
     <dimen name="recommend_tab_hight">40dp</dimen>
-    <dimen name="recommend_ppt_hight">150dp</dimen>
-    <dimen name="bottom_tab_text">18sp</dimen>
+    <dimen name="recommend_ppt_hight">100dp</dimen>
+    <dimen name="bottom_tab_text">14sp</dimen>
     <dimen name="login_text">16sp</dimen>
     <dimen name="login_hint_text">16sp</dimen>
 
+    <dimen name="item_recommend_hight">100dp</dimen>
+    
      <dimen name="item_history_hight">45dp</dimen>
      <dimen name="item_historytitle_hight">35dp</dimen>
      
-     <dimen name="item_icenter_hight">60dp</dimen>
+     <dimen name="item_icenter_hight">80dp</dimen>
 </resources>

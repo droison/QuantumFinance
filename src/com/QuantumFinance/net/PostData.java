@@ -17,7 +17,7 @@ public class PostData implements Runnable {
 	private Handler mHandler;
 	private String url;
 	private Object obj;
-	private int type; //type =1 评论
+	private int type; // type =1 评论 2为注册 3登录
 	private String TAG = "PostData";
 
 	public PostData(Context mContext, Handler mHandler, Object obj, int type) {
@@ -26,6 +26,12 @@ public class PostData implements Runnable {
 		switch (type) {
 		case 1:
 			this.url = AppConstants.HTTPURL.commentpost;
+			break;
+		case 2:
+			this.url = AppConstants.HTTPURL.reg;
+			break;
+		case 3:
+			this.url = AppConstants.HTTPURL.login;
 			break;
 		default:
 			break;
@@ -52,10 +58,10 @@ public class PostData implements Runnable {
 		case 200:
 			try {
 				String json = StringUtil.byte2String(hre.getB());
-				Log.e(TAG, "type="+type+";JSON：" + json);
+				Log.e(TAG, "type=" + type + ";JSON：" + json);
 				switch (type) {
 				case 1:
-					Result result = JSON.parseObject(json,Result.class);
+					Result result = JSON.parseObject(json, Result.class);
 					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, result));
 					break;
 				default:
@@ -64,12 +70,12 @@ public class PostData implements Runnable {
 
 			} catch (Exception e) {
 				mHandler.sendEmptyMessage(AppConstants.HANDLER_HTTPSTATUS_ERROR);
-				Log.e(TAG, "type="+type+";问题：",e);
+				Log.e(TAG, "type=" + type + ";问题：", e);
 			}
 			break;
 		default:
 			mHandler.sendEmptyMessage(AppConstants.HANDLER_HTTPSTATUS_ERROR);
-			Log.d(TAG, "type="+type+";问题："+hre.getHttpResponseCode());
+			Log.d(TAG, "type=" + type + ";问题：" + hre.getHttpResponseCode());
 			break;
 		}
 	}

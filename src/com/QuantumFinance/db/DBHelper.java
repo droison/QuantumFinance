@@ -63,7 +63,8 @@ public class DBHelper extends SQLiteOpenHelper {
 				+ "content varchar(255),"
 				+ "view_count integer,"  
 				+ "comments integer," 
-				+ "logo varchar(255));";
+				+ "logo varchar(255),"
+				+ "update_at long);";
 		db.execSQL(account);
 		db.execSQL(praise);
 		db.execSQL(collect);

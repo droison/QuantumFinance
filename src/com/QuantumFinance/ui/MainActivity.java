@@ -12,9 +12,10 @@ import com.QuantumFinance.updateapp.CheckVersionService;
 import com.QuantumFinance.updateapp.UpdateHandler;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends BaiduMTJFragmentActivity {
@@ -26,17 +27,42 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 	private HistoryFragment historyFragment;
 	private ICenterFragment iCenterFragment;
 
+	private ImageView start_bg;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setFullScreen();
 		setContentView(R.layout.activity_main);
 		setUp();
-
 		UpdateHandler updateHandler = new UpdateHandler(this);
 		ThreadExecutor.execute(new CheckVersionService(this, updateHandler));
 	}
 
+	private void setFullScreen() {
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+	}
+
+	// [代码] 退出全屏函数：
+	private void quitFullScreen() {
+		final WindowManager.LayoutParams attrs = getWindow().getAttributes();
+		attrs.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setAttributes(attrs);
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+	}
+
 	private void setUp() {
+		start_bg = (ImageView) this.findViewById(R.id.start_bg);
+		Handler startHandler = new Handler();
+		startHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				start_bg.setBackgroundDrawable(null);
+				quitFullScreen();
+			}
+		}, 3000);
+
 		titleBarFragment = new TitleBarFragment();
 		mainTabFragment = new MainTabFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.main_title_frame, titleBarFragment).commit();
@@ -93,6 +119,7 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 		case 3:
 			if (historyFragment == null) {
 				historyFragment = new HistoryFragment();
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, historyFragment).commit();
 			} else {
 				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, historyFragment).commit();
 			}
@@ -100,6 +127,7 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 		case 4:
 			if (iCenterFragment == null) {
 				iCenterFragment = new ICenterFragment();
+				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, iCenterFragment).commit();
 			} else {
 				getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame, iCenterFragment).commit();
 			}

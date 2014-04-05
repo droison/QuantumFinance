@@ -1,0 +1,14 @@
+package com.QuantumFinance.ui;
+
+import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
+
+import android.os.Bundle;
+
+public class EvaluateActivity extends BaiduMTJActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_evaluate);
+	}
+}

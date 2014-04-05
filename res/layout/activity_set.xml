@@ -19,8 +19,8 @@
             android:paddingRight="5.0dip" >
 
             <ImageView
-                android:layout_width="30.0dip"
-                android:layout_height="30.0dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/title_one_back"
                 android:onClick="finishView" />
         </LinearLayout>
@@ -37,57 +37,49 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_margin="5dp"
         android:id="@+id/set_loginlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:orientation="vertical" >
 
         <RelativeLayout
             android:id="@+id/set_headlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/image_bg"
-            android:padding="8dp" >
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:text="头像"
-                android:textColor="@color/set_text1"
-                android:textSize="16sp" />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/set_head_bg" />
 
             <ImageView
                 android:id="@+id/set_headimg"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="25dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/set_default_head" />
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/set_arrow" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:background="@drawable/image_bg"
-            android:orientation="vertical" >
+            android:background="@color/blue"
+            android:orientation="vertical"
+            android:padding="0.5dp" >
 
             <RelativeLayout
                 android:id="@+id/set_nicklayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="@color/paperinfo_content_bg"
                 android:padding="8dp" >
 
                 <TextView
@@ -118,15 +110,16 @@
                     android:src="@drawable/set_arrow" />
             </RelativeLayout>
 
-            <ImageView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/set_divider" />
+                android:layout_height="0.5dp"
+                android:background="@color/blue" />
 
             <RelativeLayout
                 android:id="@+id/set_phonelayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="@color/paperinfo_content_bg"
                 android:padding="8dp" >
 
                 <TextView
@@ -157,15 +150,16 @@
                     android:src="@drawable/set_arrow" />
             </RelativeLayout>
 
-            <ImageView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/set_divider" />
+                android:layout_height="0.5dp"
+                android:background="@color/blue" />
 
             <RelativeLayout
                 android:id="@+id/set_pwdlayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="@color/paperinfo_content_bg"
                 android:padding="8dp" >
 
                 <TextView
@@ -196,15 +190,16 @@
                     android:src="@drawable/set_arrow" />
             </RelativeLayout>
 
-            <ImageView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/set_divider" />
+                android:layout_height="0.5dp"
+                android:background="@color/blue" />
 
             <RelativeLayout
                 android:id="@+id/set_emaillayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="@color/paperinfo_content_bg"
                 android:padding="8dp" >
 
                 <TextView
@@ -235,15 +230,16 @@
                     android:src="@drawable/set_arrow" />
             </RelativeLayout>
 
-            <ImageView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/set_divider" />
+                android:layout_height="0.5dp"
+                android:background="@color/blue" />
 
             <RelativeLayout
                 android:id="@+id/set_snslayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="@color/paperinfo_content_bg"
                 android:padding="8dp" >
 
                 <TextView
@@ -279,7 +275,7 @@
             android:layout_width="fill_parent"
             android:layout_height="45dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/set_logout_btn"
+            android:background="@drawable/login_bg"
             android:gravity="center"
             android:text="退出此帐号"
             android:textColor="@color/white"
@@ -287,10 +283,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="5dp"
         android:id="@+id/set_logoutlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:orientation="vertical"
         android:visibility="gone" >
 

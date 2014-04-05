@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 
 import com.QuantumFinance.BaiduMTJ.BaiduMTJFragment;
 import com.QuantumFinance.Thread.ThreadExecutor;
@@ -85,6 +86,10 @@ public class HistoryFragment extends BaiduMTJFragment implements PullToRefreshVi
 				if (page == 1) {
 					lastDate = "";
 					pull_list_layout.removeAllViews();
+					View line = new View(parentActivity);
+					line.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 18));
+					pull_list_layout.addView(line);
+					root.setFooterRefresh(true);
 				}
 				adapter = new HistoryAdapter(historyList, parentActivity);
 				int count = adapter.getCount();

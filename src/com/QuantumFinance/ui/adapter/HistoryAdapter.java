@@ -72,7 +72,9 @@ public class HistoryAdapter extends BaseAdapter {
 
 			@Override
 			public void onClick(View arg0) {
-
+				Intent toRecommendInfo = new Intent(mContext, RecommendInfoActivity.class);
+				toRecommendInfo.putExtra("rb", hb);
+				mContext.startActivity(toRecommendInfo);
 			}
 		});
 		return converView;

@@ -56,7 +56,7 @@ public class DialogUtil {
 	}
 	
 	public void showToast(Activity activity,String msg){
-		
+		Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
 	}
 
 	public void showNoNetWork(Activity activity) {

@@ -30,6 +30,6 @@
         android:gravity="center"
         android:text="量子财经"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="@dimen/main_title_text" />
 
 </RelativeLayout>

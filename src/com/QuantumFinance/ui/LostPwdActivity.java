@@ -6,6 +6,7 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.LoginOrRegResult;
 import com.QuantumFinance.net.base.LoginOrRegResult.PhoneVerify;
 import com.QuantumFinance.util.DialogUtil;
+import com.QuantumFinance.util.StringUtil;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +20,8 @@ import android.widget.TextView;
 
 public class LostPwdActivity extends BaiduMTJActivity implements OnClickListener {
 
-	private EditText lostpwd_password, lostpwd_repassword, lostpwd_phone, lostpwd_checknum;
-	private TextView lostpwd_check, lostpwd_submit;
+	private EditText lostpwd_password, lostpwd_repassword, lostpwd_email;
+	private TextView lostpwd_submit;
 	private DialogUtil dialogUtil;
 
 	@Override
@@ -37,13 +38,8 @@ public class LostPwdActivity extends BaiduMTJActivity implements OnClickListener
 	private void setUpView() {
 		lostpwd_password = (EditText) this.findViewById(R.id.lostpwd_password);
 		lostpwd_repassword = (EditText) this.findViewById(R.id.lostpwd_repassword);
-		lostpwd_phone = (EditText) this.findViewById(R.id.lostpwd_phone);
-		lostpwd_checknum = (EditText) this.findViewById(R.id.lostpwd_checknum);
-
-		lostpwd_check = (TextView) this.findViewById(R.id.lostpwd_check);
+		lostpwd_email = (EditText) this.findViewById(R.id.lostpwd_email);
 		lostpwd_submit = (TextView) this.findViewById(R.id.lostpwd_submit);
-		lostpwd_check.setTag("未验证");
-		lostpwd_check.setOnClickListener(this);
 		lostpwd_submit.setOnClickListener(this);
 
 		dialogUtil = new DialogUtil();
@@ -52,33 +48,6 @@ public class LostPwdActivity extends BaiduMTJActivity implements OnClickListener
 	private void initData() {
 
 	}
-
-	//手机验证的handler
-	private Handler phoneVerifyHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			lostpwd_check.setTag("未验证");
-			dialogUtil.dismissDownloadDialog();
-			switch (msg.what) {
-			case AppConstants.HANDLER_MESSAGE_NORMAL:
-				LoginOrRegResult.PhoneVerify pv = (LoginOrRegResult.PhoneVerify) msg.obj;
-				if (pv.isResult()) {
-					lostpwd_check.setTag("正在验证");
-					dialogUtil.showToast(LostPwdActivity.this, "发送成功，请注意查收");
-					ThreadExecutor.execute(timeRunable);
-				} else {
-					dialogUtil.showToast(LostPwdActivity.this, "失败：手机号已经注册");
-				}
-				break;
-			case AppConstants.HANDLER_MESSAGE_NONETWORK:
-				dialogUtil.showNoNetWork(LostPwdActivity.this);
-				break;
-			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
-				dialogUtil.showToast(LostPwdActivity.this, "发送验证码失败，请稍后重试");
-				break;
-			}
-
-		};
-	};
 
 	//修改密码用的handler
 	private Handler submiltHandler = new Handler() {
@@ -105,74 +74,25 @@ public class LostPwdActivity extends BaiduMTJActivity implements OnClickListener
 		};
 	};
 
-	private Handler timerHandler = new Handler() {
-
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case 112:
-				lostpwd_check.setText("验证");
-				lostpwd_check.setTag("未验证");
-				break;
-			default:
-				lostpwd_check.setText(msg.what + "s...");
-				break;
-			}
-		}
-	};
-
-	Runnable timeRunable = new Runnable() {
-
-		@Override
-		public void run() {
-			int i = 10;
-			while (i-- > 0) {
-				timerHandler.sendEmptyMessage(i);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			timerHandler.sendEmptyMessage(112);
-		}
-	};
-
 	@Override
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
-		case R.id.lostpwd_check:
-			String phone = lostpwd_phone.getText().toString();
-			if (TextUtils.isEmpty(phone) || phone.length() != 11) {
-				dialogUtil.showToast(this, "号码为空或长度不对");
-			} else {
-				if (lostpwd_check.getTag().equals("未验证")) {
-					dialogUtil.showProgressDialog(this, "正在发送");
-					lostpwd_check.setTag("正在验证");
-
-					// 运行发送密码线程
-				}
-
-			}
-			break;
 		case R.id.lostpwd_submit:
-			phone = lostpwd_phone.getText().toString();
+			String email = lostpwd_email.getText().toString();
 			String password = lostpwd_password.getText().toString();
 			String rePassword = lostpwd_repassword.getText().toString();
-			String verify = lostpwd_checknum.getText().toString();
 			if (TextUtils.isEmpty(password)) {
 				dialogUtil.showToast(this, "密码不能为空");
 			} else if (TextUtils.isEmpty(rePassword)) {
 				dialogUtil.showToast(this, "请在输入一次密码");
-			} else if (TextUtils.isEmpty(phone)) {
-				dialogUtil.showToast(this, "手机号不能为空");
-			} else if (TextUtils.isEmpty(verify)) {
-				dialogUtil.showToast(this, "验证码不能为空");
+			} else if (TextUtils.isEmpty(email)) {
+				dialogUtil.showToast(this, "邮箱不能为空");
 			} else if (password.length() < 8) {
 				dialogUtil.showToast(this, "密码长度要大于8位");
 			} else if (!password.equals(rePassword)) {
 				dialogUtil.showToast(this, "两次密码输入不一致");
-			} else if (phone.length() != 11) {
-				dialogUtil.showToast(this, "手机号格式错误");
+			} else if (!StringUtil.checkEmail(email)) {
+				dialogUtil.showToast(this, "邮箱格式错误");
 			} else {
 				dialogUtil.showProgressDialog(this, "正在提交");
 				// 运行修改密码线程

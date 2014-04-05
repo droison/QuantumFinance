@@ -1,6 +1,7 @@
 package com.QuantumFinance.db;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.QuantumFinance.net.base.PaperBase;
@@ -41,6 +42,7 @@ public class CollectDAO {
 			if (paper.getLogo() != null) {
 				values.put("logo", paper.getLogo());
 			}
+			values.put("update_at", paper.getUpdated_at().getTime());
 			db.insert("collect", null, values);
 		}
 	}
@@ -69,6 +71,7 @@ public class CollectDAO {
 			paper.setView_count(cursor.getInt(5));
 			paper.setComments(cursor.getInt(6));
 			paper.setLogo(cursor.getString(7));
+			paper.setUpdated_at(new Date(cursor.getLong(8)));
 			papers.add(paper);
 		}
 

@@ -2,26 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp" >
 
-    <TextView
-        android:id="@+id/item_historytitle_y"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/item_historytitle_hight"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical|right"
-        android:text="2014年" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/item_historytitle_md"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/item_historytitle_hight"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="3"
-        android:gravity="center_vertical|left"
-        android:text="2月28日" />
+        <TextView
+            android:id="@+id/item_historytitle_y"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_historytitle_hight"
+            android:layout_weight="1"
+            android:background="@drawable/item_history_title_bg1"
+            android:gravity="center_vertical|right"
+            android:paddingRight="3dp"
+            android:text="2014年"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_historytitle_hight"
+            android:layout_weight="3"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/item_historytitle_md"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/item_history_title_bg2"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="3dp"
+                android:text="2月28日"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+    <include layout="@layout/item_history_line" />
 
 </LinearLayout>

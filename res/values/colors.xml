@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="transparent">#00000000</color>
     <color name="translucent">#80000000</color>
     <color name="white">#ffffffff</color>
     <color name="abs__background_holo_dark">#ff000000</color>
     <color name="abs__background_holo_light">#fff3f3f3</color>
-    <item type="color" name="abs__bright_foreground_holo_dark">@color/abs__background_holo_light</item>
-    <item type="color" name="abs__bright_foreground_holo_light">@color/abs__background_holo_dark</item>
+
+    <item name="abs__bright_foreground_holo_dark" type="color">@color/abs__background_holo_light</item>
+    <item name="abs__bright_foreground_holo_light" type="color">@color/abs__background_holo_dark</item>
+
     <color name="abs__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
     <color name="abs__bright_foreground_disabled_holo_light">#ffb2b2b2</color>
     <color name="black">#ff000000</color>
     <color name="grey">#ff888888</color>
     <color name="red">#ff9c1a1a</color>
     <color name="green">#ff1a9c1a</color>
-    <color name="blue">#ff1a1a9c</color>
+    <color name="blue">#ff1E8BD3</color>
     <color name="background_tab_pressed">#6633b5e5</color>
     <color name="span_2px">#ff595959</color>
     <color name="line">#ffdcdcdc</color>
@@ -26,17 +29,29 @@
     <color name="menu_group">#ff737373</color>
     <color name="background_light">#ffebebeb</color>
     <color name="background_dark">#ffd0d0d0</color>
-    <color name="main_tab_bg">#ffeaeaea</color>
     <color name="main_title_bg">#ffa00000</color>
     <color name="main_title_bg_press">#ff820000</color>
     <color name="set_text1">#ff333333</color>
     <color name="set_text2">#ff999999</color>
     <color name="set_logout">#ff990000</color>
-     <color name="set_logout_press">#ff840000</color>
-     <color name="tag_text">#ff666666</color>
-      <color name="tag_bg">#bbcecece</color>
-      <color name="tag_title_text">#ff333333</color>
-      
-      <!-- 以下是标签相关 -->
-     <color name="bottom_tab_text">#ff000000</color>
+    <color name="set_logout_press">#ff840000</color>
+    <color name="tag_text">#ff666666</color>
+    <color name="tag_bg">#bbcecece</color>
+    <color name="tag_title_text">#ff333333</color>
+    <color name="item_recommend_bg">#ffedf1f4</color>
+    <!-- 以下是标签相关 -->
+    <color name="main_tab_text">#ffffffff</color>
+    <color name="main_tab_bg">#ff1b4f6d</color>
+    <color name="main_tab_bg_press">#ff0e9fde</color>
+    <color name="main_title_bg">#ff0e9fde</color>
+
+    <color name="recommendinfo_item_bg1">#22aaaaaa</color>
+    <color name="recommendinfo_text1">#aa333333</color>
+    
+    <color name="paperinfo_text">#666666</color>
+    <color name="paperinfo_content_bg">#edf2f4</color>
+    
+    <color name="comment_bg">#ccffffff</color>
+    
+    <color name="icenter_item_bg">#f0f4f7</color>
 </resources>

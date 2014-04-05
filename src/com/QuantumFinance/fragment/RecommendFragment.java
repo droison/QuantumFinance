@@ -18,13 +18,20 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.AsyncImageLoader;
 import com.QuantumFinance.net.AsyncImageLoader.ImageCallback;
 import com.QuantumFinance.net.GetData;
+import com.QuantumFinance.net.base.PPTBase;
 import com.QuantumFinance.net.base.RecommendBase;
 import com.QuantumFinance.ui.MainActivity;
 import com.QuantumFinance.ui.R;
+import com.QuantumFinance.ui.RecommendInfoActivity;
+import com.QuantumFinance.ui.PaperInfoActivity;
 import com.QuantumFinance.ui.adapter.RecommendAdapter;
 import com.QuantumFinance.util.DialogUtil;
+import com.QuantumFinance.util.DpSpDip2Px;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -34,7 +41,9 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class RecommendFragment extends BaiduMTJFragment implements OnClickListener {
@@ -48,6 +57,8 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 	private MainActivity parentActivity;
 	private View root;
 	private RelativeLayout recommend_tab_layout1, recommend_tab_layout2;
+	private TextView recommend_tab_text1, recommend_tab_text2;
+	private LinearLayout dot_layout;
 
 	private String serverUrl;
 	private DialogUtil dialogUtil;
@@ -57,6 +68,7 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 
 	private RecommendAdapter recommendAdapter;
 	private int type = 2; // 1是稳健型，2是激进型 激进型=radical，稳健型＝solid
+	private DpSpDip2Px dp2sp;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -85,27 +97,51 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				imageViews = new ArrayList<ImageView>();
-
-				final ImageView imageView = new ImageView(parentActivity);
-				asynImageLoader.loadDrawable(parentActivity, "图片URL", new ImageCallback() {
-
-					@Override
-					public void imageLoaded(Bitmap bm, String imageUrl) {
-						imageView.setImageBitmap(bm);
-					}
-				}, "保存文件夹", "保存的名字");
-				imageView.setScaleType(ScaleType.CENTER_CROP);
-				imageView.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-					}
-				});
-				imageViews.add(imageView);
-
 				dots = new ArrayList<View>();
-				dots.add(root.findViewById(R.id.v_dot0));
-				dots.add(root.findViewById(R.id.v_dot1));
-				dots.add(root.findViewById(R.id.v_dot2));
+				List<PPTBase> pbs = (List<PPTBase>) msg.obj;
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(10, 10);
+				lp.setMargins(5, 0, 5, 0);
+
+				for (int i = 0; i < pbs.size(); i++) {
+					final PPTBase pb = pbs.get(i);
+					final ImageView imageView = new ImageView(parentActivity);
+					imageView.setImageResource(R.drawable.image_default);
+					asynImageLoader.loadDrawable(parentActivity, AppConstants.HTTPURL.serverIP + pb.getPpt_logo(), new ImageCallback() {
+
+						@Override
+						public void imageLoaded(Bitmap bm, String imageUrl) {
+							if (bm != null)
+								imageView.setImageBitmap(bm);
+						}
+					}, "ppt", "ppt_" + pb.getId() + ".jpg");
+					imageView.setScaleType(ScaleType.CENTER_CROP);
+
+					imageView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View arg0) {
+							Intent toIntent;
+							if (pb.getPpt_type().equals("comment")) {
+								toIntent = new Intent(parentActivity, PaperInfoActivity.class);
+							} else {
+								toIntent = new Intent(parentActivity, RecommendInfoActivity.class);
+							}
+							toIntent.putExtra("PPTBase",pb);
+							toIntent.putExtra("isPPT", true);
+							parentActivity.startActivity(toIntent);
+						}
+					});
+					imageViews.add(imageView);
+
+					View view = new View(parentActivity);
+					if (i == 0) {
+						view.setBackgroundResource(R.drawable.dot_focused);
+					} else {
+						view.setBackgroundResource(R.drawable.dot_normal);
+					}
+					view.setLayoutParams(lp);
+					dot_layout.addView(view);
+					dots.add(view);
+				}
 
 				viewPager.setAdapter(new MyAdapter());
 
@@ -123,18 +159,22 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 	};
 
 	public void setUpView() {
-
 		parentActivity = (MainActivity) getActivity();
 
 		if (parentActivity == null)
 			return;
 
+		dp2sp = new DpSpDip2Px(parentActivity);
 		viewPager = (ViewPager) root.findViewById(R.id.recommend_ppt);
+		viewPager.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dp2sp.getPPTHigh()));
 		dialogUtil = new DialogUtil();
 		asynImageLoader = new AsyncImageLoader();
 		recommend_list = (LinearLayout) root.findViewById(R.id.recommend_list);
 		recommend_tab_layout2 = (RelativeLayout) root.findViewById(R.id.recommend_tab_layout2);
 		recommend_tab_layout1 = (RelativeLayout) root.findViewById(R.id.recommend_tab_layout1);
+		dot_layout = (LinearLayout) root.findViewById(R.id.dot_layout);
+		recommend_tab_text1 = (TextView) root.findViewById(R.id.recommend_tab_text1);
+		recommend_tab_text2 = (TextView) root.findViewById(R.id.recommend_tab_text2);
 
 	}
 
@@ -289,9 +329,17 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 
 	private void switchTab() {
 		if (type == 1) {
+			recommend_tab_layout2.setBackgroundResource(R.drawable.item_recommend_bg1);
+			recommend_tab_layout1.setBackgroundDrawable(null);
+			recommend_tab_text1.setTextColor(Color.rgb(31, 141, 215));
+			recommend_tab_text2.setTextColor(Color.WHITE);
 			// 切换tab样式
 			type = 2;
 		} else {
+			recommend_tab_layout1.setBackgroundResource(R.drawable.item_recommend_bg1);
+			recommend_tab_layout2.setBackgroundDrawable(null);
+			recommend_tab_text1.setTextColor(Color.WHITE);
+			recommend_tab_text2.setTextColor(Color.rgb(31, 141, 215));
 			// 切换tab样式
 			type = 1;
 		}

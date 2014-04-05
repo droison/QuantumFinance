@@ -22,6 +22,10 @@ public class DpSpDip2Px {
 		return px2dip(screenPxWidth);
 	}
 
+	public int getPPTHigh() {
+		return screenPxWidth * 350 / 720;
+	}
+
 	/**
 	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
 	 */
@@ -45,6 +49,5 @@ public class DpSpDip2Px {
 		float pxValue = spValue * fontScale + 0.5f;
 		return (int) (pxValue / scale + 0.5f);
 	}
-
 
 }

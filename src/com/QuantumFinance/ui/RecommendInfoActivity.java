@@ -15,6 +15,7 @@ import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
 import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.GetData;
+import com.QuantumFinance.net.base.PPTBase;
 import com.QuantumFinance.net.base.RecommendBase;
 import com.QuantumFinance.net.base.RecommendInfoBase;
 import com.QuantumFinance.util.DialogUtil;
@@ -34,6 +35,8 @@ public class RecommendInfoActivity extends BaiduMTJActivity {
 	private RecommendBase rb = new RecommendBase();
 	private RecommendInfoBase rib = new RecommendInfoBase();
 	private DialogUtil dialogUtil = new DialogUtil();
+	private boolean isPPT = false;
+	private int recommendId = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +48,30 @@ public class RecommendInfoActivity extends BaiduMTJActivity {
 	}
 
 	private void initData() {
-		rb = (RecommendBase) getIntent().getSerializableExtra("rb");
+		
+		isPPT = getIntent().getBooleanExtra("isPPT", false);
+		if(isPPT){
+			PPTBase pb = (PPTBase) getIntent().getSerializableExtra("PPTBase");
+			recommendId = pb.getComment_or_product_id();
+		}else{
+			rb = (RecommendBase) getIntent().getSerializableExtra("rb");
 
-		recommendinfo_deadline.setText(rb.getDeadline() + "个月");
-		recommendinfo_eair.setText(rb.getEair());
-
-		recommendinfo_title.setText(rb.getTitle());
-		if (rb.getSchedule().equals("无")) {
-			recommendinfo_progressbar.setProgress(0);
-			recommendinfo_schedule.setText(rb.getSchedule());
-		} else {
-			float pro = Float.valueOf(rb.getSchedule().replace("%", ""));
-			recommendinfo_progressbar.setProgress((int) pro);
-			recommendinfo_schedule.setText((int) pro + "%");
+			recommendinfo_deadline.setText(rb.getDeadline() + "个月");
+			recommendinfo_eair.setText(rb.getEair());
+			recommendinfo_title.setText(rb.getTitle());
+			if (rb.getSchedule().equals("无")) {
+				recommendinfo_progressbar.setProgress(0);
+				recommendinfo_schedule.setText(rb.getSchedule());
+			} else {
+				float pro = Float.valueOf(rb.getSchedule().replace("%", ""));
+				recommendinfo_progressbar.setProgress((int) pro);
+				recommendinfo_schedule.setText((int) pro + "%");
+			}
+			recommendId = rb.getId();
 		}
+		
 		dialogUtil.showProgressDialog(this, "正在读取数据...");
-		ThreadExecutor.execute(new GetData(this, mHandler, AppConstants.HTTPURL.recommendInfo + rb.getId(), 5));
+		ThreadExecutor.execute(new GetData(this, mHandler, AppConstants.HTTPURL.recommendInfo + recommendId, 5));
 
 	}
 
@@ -70,6 +81,8 @@ public class RecommendInfoActivity extends BaiduMTJActivity {
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				rib = (RecommendInfoBase) msg.obj;
+				if(rib==null)
+					return;
 				recommendinfo_deadline.setText(rib.getDeadline() + "个月");
 				recommendinfo_eair.setText(rib.getEair());
 				recommendinfo_schedule.setText(rib.getSchedule());

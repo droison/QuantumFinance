@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 
 import com.QuantumFinance.BaiduMTJ.BaiduMTJFragment;
 import com.QuantumFinance.Thread.ThreadExecutor;
@@ -22,6 +23,7 @@ import com.QuantumFinance.ui.component.PullToRefreshView;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 public class PaperListFragment extends BaiduMTJFragment implements PullToRefreshView.OnHeaderRefreshListener, PullToRefreshView.OnFooterRefreshListener {
@@ -40,6 +42,7 @@ public class PaperListFragment extends BaiduMTJFragment implements PullToRefresh
 		setUpView();
 		initData();
 		setUpListener();
+		
 		return root;
 	}
 
@@ -76,10 +79,15 @@ public class PaperListFragment extends BaiduMTJFragment implements PullToRefresh
 				if (page == 1) {
 					pull_list_layout.removeAllViews();
 				}
+				
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				lp.setMargins(10, 10, 10, 0);
+				
 				adapter = new PaperAdapter(paperList, parentActivity);
 				int count = adapter.getCount();
 				for (int i = 0; i < count; i++) {
 					View v = adapter.getDropDownView(i, null, null);
+//					v.setLayoutParams(lp);
 					pull_list_layout.addView(v);
 				}
 				if (paperList.size() == 0) {

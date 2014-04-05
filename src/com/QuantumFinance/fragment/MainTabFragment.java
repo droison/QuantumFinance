@@ -4,6 +4,8 @@ import com.QuantumFinance.BaiduMTJ.BaiduMTJFragment;
 import com.QuantumFinance.ui.MainActivity;
 import com.QuantumFinance.ui.R;
 
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,24 +55,27 @@ public class MainTabFragment extends BaiduMTJFragment {
 		bottom_tab_layout3.setOnClickListener(new CheckListener());
 		bottom_tab_layout2.setOnClickListener(new CheckListener());
 		bottom_tab_layout1.setOnClickListener(new CheckListener());
-		
+
 		parentActivity.switchContent(1);
-		switchTab(R.id.bottom_tab_layout1);
 	}
 
 	public void switchTab(int viewId) {
+		bottom_tab_layout1.setBackgroundColor(Color.rgb(27, 79, 109));
+		bottom_tab_layout2.setBackgroundColor(Color.rgb(27, 79, 109));
+		bottom_tab_layout3.setBackgroundColor(Color.rgb(27, 79, 109));
+		bottom_tab_layout4.setBackgroundColor(Color.rgb(27, 79, 109));
 		switch (viewId) {
 		case 1:
-
+			bottom_tab_layout1.setBackgroundColor(Color.rgb(14, 159, 222));
 			break;
 		case 2:
-
+			bottom_tab_layout2.setBackgroundColor(Color.rgb(14, 159, 222));
 			break;
 		case 3:
-
+			bottom_tab_layout3.setBackgroundColor(Color.rgb(14, 159, 222));
 			break;
 		case 4:
-
+			bottom_tab_layout4.setBackgroundColor(Color.rgb(14, 159, 222));
 			break;
 		}
 	}
@@ -79,6 +84,7 @@ public class MainTabFragment extends BaiduMTJFragment {
 
 		@Override
 		public void onClick(View arg0) {
+			switchTab(arg0.getId());
 			switch (arg0.getId()) {
 
 			case R.id.bottom_tab_layout1:
