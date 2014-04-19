@@ -11,19 +11,20 @@
         android:paddingTop="10dp" >
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="2px"
-            android:layout_marginTop="2px"
-            android:background="@color/main_title_bg" >
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:padding="10dp"
+            android:background="@color/blue" >
 
             <ImageView
                 android:id="@+id/item_paper_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/image_default" />
+                android:scaleType="fitXY"
+                android:background="@color/white"
+                android:src="@drawable/img_default" />
         </FrameLayout>
 
         <LinearLayout

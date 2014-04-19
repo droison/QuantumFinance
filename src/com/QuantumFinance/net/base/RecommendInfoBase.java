@@ -16,6 +16,15 @@ public class RecommendInfoBase {
 	private String title;// "月息通 YAC13K209",
 	private String total_money;// "338.22",
 	private Date updated_at;
+	private String logo;
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 
 	public String getBorrower_level() {
 		return borrower_level;

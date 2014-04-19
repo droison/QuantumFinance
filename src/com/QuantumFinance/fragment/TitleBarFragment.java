@@ -35,10 +35,10 @@ public class TitleBarFragment extends BaiduMTJFragment implements OnClickListene
 	public void setTitleText(int fragmentNum) {
 		switch (fragmentNum) {
 		case 1:
-			title_one_name.setText("推广产品");
+			title_one_name.setText("推荐产品");
 			break;
 		case 2:
-			title_one_name.setText("专家点评");
+			title_one_name.setText("视角");
 			break;
 		case 3:
 			title_one_name.setText("历史回顾");

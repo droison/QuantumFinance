@@ -282,24 +282,5 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/set_logoutlayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/set_login"
-            android:layout_width="fill_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/set_logout_btn"
-            android:gravity="center"
-            android:text="点此登录"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-    </LinearLayout>
 
 </LinearLayout>

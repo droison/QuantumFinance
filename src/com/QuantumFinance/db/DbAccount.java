@@ -16,6 +16,24 @@ public class DbAccount implements Serializable {
 	private String email;
 	private boolean bind_weibo;
 	private boolean bind_qq;
+	private String sex;
+	private int userid;
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
 
 	public String getEmail() {
 		return email;

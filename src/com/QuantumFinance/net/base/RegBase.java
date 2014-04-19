@@ -3,8 +3,8 @@ package com.QuantumFinance.net.base;
 public class RegBase {
 	private User user;
 
-	public RegBase(String email, String password, String password_confirmation) {
-		this.user = new User(email, password, password_confirmation);
+	public RegBase(String name, String email, String password, String password_confirmation) {
+		this.user = new User(name, email, password, password_confirmation);
 	}
 
 	public User getUser() {
@@ -19,9 +19,19 @@ public class RegBase {
 		private String password_confirmation;
 		private String password;
 		private String email;
+		private String name;
 
-		public User(String email, String password, String password_confirmation) {
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public User(String name, String email, String password, String password_confirmation) {
 			this.email = email;
+			this.name = name;
 			this.password = password;
 			this.password_confirmation = password_confirmation;
 		}

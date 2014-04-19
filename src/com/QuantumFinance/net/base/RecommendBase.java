@@ -2,7 +2,7 @@ package com.QuantumFinance.net.base;
 
 import java.io.Serializable;
 
-public class RecommendBase implements Serializable{
+public class RecommendBase implements Serializable {
 	/**
 	 * 
 	 */
@@ -13,6 +13,15 @@ public class RecommendBase implements Serializable{
 	private String schedule;// "100%",
 	private String source;// "aitouzi",
 	private String title;// "汽车销售企业新车采购（二..."
+	private String logo;
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 
 	public String getDeadline() {
 		return deadline;

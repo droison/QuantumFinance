@@ -6,6 +6,7 @@ import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
 import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
+import com.QuantumFinance.db.DbAccount;
 import com.QuantumFinance.net.PostData;
 import com.QuantumFinance.net.base.LoginBase;
 import com.QuantumFinance.net.base.LoginOrRegResult;
@@ -31,7 +32,7 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 
 	private EditText login_email, login_password;
 	private TextView login_lostpass, login_login, login_register;
-	private ImageView  login_weibo, login_qq;
+	private ImageView login_weibo, login_qq;
 	private DialogUtil dialogUtil;
 	private AccountDAO accountDAO;
 	private static final int REGISTERCODE = 11;
@@ -77,7 +78,7 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 
 		case R.id.login_weibo:
 			Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
-			if(weibo.isValid()){
+			if (weibo.isValid()) {
 				weibo.removeAccount();
 			}
 			dialogUtil.showProgressDialog(LoginActivity.this, "正在登录");
@@ -93,9 +94,8 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 					String weiboId = platform.getDb().get("weibo");
 					String imageUrl = (String) res.get("profile_image_url");
 					String nickname = (String) res.get("screen_name");
-					
 
-					//运行社交帐号注册登录线程
+					// 运行社交帐号注册登录线程
 				}
 
 				public void onCancel(Platform platform, int action) {
@@ -108,8 +108,7 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 			break;
 		case R.id.login_qq:
 			Platform qq = ShareSDK.getPlatform(this, QZone.NAME);
-			if(qq.isValid())
-			{
+			if (qq.isValid()) {
 				qq.removeAccount();
 			}
 			dialogUtil.showProgressDialog(LoginActivity.this, "正在登录");
@@ -122,13 +121,12 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 				}
 
 				public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
-					
+
 					String weiboId = platform.getDb().get("weibo");
 					String nickname = (String) res.get("nickname");
 					String imageUrl = (String) res.get("figureurl_2");
-					
 
-					//运行社交帐号注册登录线程
+					// 运行社交帐号注册登录线程
 				}
 
 				public void onCancel(Platform platform, int action) {
@@ -161,18 +159,30 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 			break;
 		}
 	}
-	
+
 	private Handler loginHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			dialogUtil.dismissProgressDialog();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
-				LoginOrRegResult.Login loginResult= (LoginOrRegResult.Login)msg.obj;
-				if(loginResult.isResult()){
-					//此处要记得保存数据
+				LoginOrRegResult.Login loginResult = (LoginOrRegResult.Login) msg.obj;
+				if (loginResult.getMessage() == null) {
+					// 此处要记得保存数据
+					DbAccount account = new DbAccount();
+					account.setUserid(loginResult.getId());
+					account.setUsername(loginResult.getName());
+					account.setFace(loginResult.getAvatar());
+					account.setToken(loginResult.getAuthentication_token());
+					account.setEmail(loginResult.getEmail());
+					account.setSex(loginResult.getSex());
+					account.setEmail(loginResult.getEmail());
+					account.setBind_qq(loginResult.isQq());
+					account.setBind_weibo(loginResult.isWeibo());
+					accountDAO.save(account);
+
 					setResult(RESULT_OK);
 					finish();
-				}else{
+				} else {
 					dialogUtil.showToast(LoginActivity.this, loginResult.getMessage());
 				}
 				break;
@@ -187,8 +197,6 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 		};
 	};
 
-	
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -199,11 +207,11 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_CANCELED)
 			return;
-		else if(resultCode == RESULT_OK){
+		else if (resultCode == RESULT_OK) {
 			setResult(RESULT_OK);
 			finish();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 }

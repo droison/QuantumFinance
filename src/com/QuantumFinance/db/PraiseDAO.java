@@ -1,5 +1,7 @@
 package com.QuantumFinance.db;
 
+import com.QuantumFinance.constants.AppConstants;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,18 +12,18 @@ public class PraiseDAO {
 	private DBHelper dbOpenHelper;
 
 	public PraiseDAO(Context context) {
-		DBHelper.init(context);
+		DBHelper.init(context, AppConstants.databaseversion);
 		this.dbOpenHelper = DBHelper.dbHelper();
 	}
 
 	public void save(String paper_id) {
-		if(!isExist(paper_id)){
+		if (!isExist(paper_id)) {
 			SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 			ContentValues values = new ContentValues();
 			values.put("paper_id", paper_id);
 			db.insert("praise", null, values);
 		}
-		
+
 	}
 
 	public boolean isExist(String paper_id) {

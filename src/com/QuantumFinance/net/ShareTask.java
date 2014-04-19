@@ -112,15 +112,35 @@ public class ShareTask extends AsyncTask<String, Integer, String> {
 
 			OnekeyShare oks = new OnekeyShare();
 			oks.setNotification(R.drawable.ic_launcher, mActivity.getString(R.string.app_name));
-			oks.setTitle(mActivity.getString(R.string.share));
+			oks.setTitle(mActivity.getString(R.string.share_content));
 			oks.setTitleUrl(imageUrl);
-			oks.setText(paper.getContent());
+			oks.setText(paper.getTitle());
 			oks.setImagePath(path);
 			oks.setImageUrl(imageUrl);
 			oks.setUrl(imageUrl);
 			// oks.setFilePath(AppConstants.HTTPURL.serverIP +
 			// paper.getMphoto());
-			oks.setComment(mActivity.getString(R.string.share));
+			oks.setComment(mActivity.getString(R.string.share_content));
+			oks.setSite(mActivity.getString(R.string.app_name));
+			oks.setSiteUrl(imageUrl);
+			oks.setSilent(false);
+			// 去除注释，可令编辑页面显示为Dialog模式
+			oks.setDialogMode();
+			// 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
+			oks.setCallback(new OneKeyShareCallback());
+
+			oks.show(mActivity);
+		}else{
+			OnekeyShare oks = new OnekeyShare();
+			oks.setNotification(R.drawable.ic_launcher, mActivity.getString(R.string.app_name));
+			oks.setTitle(mActivity.getString(R.string.share_content));
+			oks.setTitleUrl(imageUrl);
+			oks.setText(paper.getTitle());
+			oks.setImageUrl(imageUrl);
+			oks.setUrl(imageUrl);
+			// oks.setFilePath(AppConstants.HTTPURL.serverIP +
+			// paper.getMphoto());
+			oks.setComment(mActivity.getString(R.string.share_content));
 			oks.setSite(mActivity.getString(R.string.app_name));
 			oks.setSiteUrl(imageUrl);
 			oks.setSilent(false);

@@ -1,11 +1,15 @@
 package com.QuantumFinance.ui;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +17,7 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,21 +31,25 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
 import com.QuantumFinance.db.CollectDAO;
 import com.QuantumFinance.db.PraiseDAO;
-import com.QuantumFinance.net.AsyncImageLoader;
 import com.QuantumFinance.net.GetData;
 import com.QuantumFinance.net.ShareTask;
-import com.QuantumFinance.net.AsyncImageLoader.ImageCallback;
 import com.QuantumFinance.net.base.CommentBase;
 import com.QuantumFinance.net.base.PPTBase;
 import com.QuantumFinance.net.base.PaperBase;
 import com.QuantumFinance.ui.adapter.CommentAdapter;
 import com.QuantumFinance.ui.component.PullToRefreshView;
 import com.QuantumFinance.util.DialogUtil;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefreshView.OnFooterRefreshListener, PullToRefreshView.OnHeaderRefreshListener {
 
 	private TextView paperinfo_comment;
-	private TextView paperinfo_content;
+	private WebView paperinfo_content;
 	private ImageView paperinfo_logo;
 	private TextView paperinfo_time;
 	private TextView paperinfo_title;
@@ -61,7 +70,9 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 	private PaperBase pb;
 
 	private DialogUtil dialogUtil = new DialogUtil();
-	private AsyncImageLoader imageLoader = new AsyncImageLoader();
+	private ImageLoader imageLoader = ImageLoader.getInstance();
+	DisplayImageOptions options;
+	private ImageLoadingListener displayListener = new DisplayListener();
 	private SimpleDateFormat sdf;
 	private boolean isGridRefresh = false;
 	private boolean isGridLoadMore = false;
@@ -96,37 +107,35 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 			ThreadExecutor.execute(new GetData(this, paperHandler, AppConstants.HTTPURL.paperInfo + pptBase.getComment_or_product_id(), 6));
 		} else {
 			pb = (PaperBase) getIntent().getSerializableExtra("pb");
-			sdf = new SimpleDateFormat("MM-dd hh:mm");
-			paperinfo_comment.setText("评论:" + pb.getComments());
+			// sdf = new SimpleDateFormat("MM-dd HH:mm");
+			// paperinfo_comment.setText("评论:" + pb.getComments());
+			// pb.setContent(pb.getContent().replace("background-color:", ""));
+			// paperinfo_content.loadDataWithBaseURL(null, new
+			// StringBuilder(AppConstants.FONT_START).append(AppConstants.BODY_START).append(pb.getContent()).append(AppConstants.BODY_END).toString(),
+			// AppConstants.TEXT_HTML, AppConstants.UTF8, null);
+			// paperinfo_content.setBackgroundColor(getResources().getColor(R.color.paperinfo_content_bg));
+			// paperinfo_time.setText(sdf.format(pb.getUpdated_at()));
+			// paperinfo_title.setText(pb.getTitle());
+			// if (pb.getTitle() == null || pb.getTitle().equals("")) {
+			// paperinfo_title.setText("    ");
+			// }
+			//
+			// paperinfo_view.setText("浏览:" + pb.getView_count());
+			//
+			// if (collectDAO.isExist("" + pb.getId())) {
+			// paperinfo_tab_text2.setCompoundDrawablesWithIntrinsicBounds(0,
+			// R.drawable.paperinfo_collect_press, 0, 0);
+			// }
+			// if (praiseDAO.isExist("" + pb.getId())) {
+			// paperinfo_tab_text4.setCompoundDrawablesWithIntrinsicBounds(0,
+			// R.drawable.paperinfo_praise_press, 0, 0);
+			// }
+			//
+			// imageLoader.displayImage(AppConstants.HTTPURL.serverIP+
+			// pb.getLogo(), paperinfo_logo, options, displayListener);
 
-			paperinfo_content.setText(pb.getContent());
-
-			paperinfo_time.setText(sdf.format(pb.getUpdated_at()));
-			paperinfo_title.setText(pb.getTitle());
-			if (pb.getTitle() == null || pb.getTitle().equals("")) {
-				paperinfo_title.setText("    ");
-			}
-
-			paperinfo_view.setText("浏览:" + pb.getView_count());
-
-			if (collectDAO.isExist("" + pb.getId())) {
-				paperinfo_tab_text2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_collect_press, 0, 0);
-			}
-			if (praiseDAO.isExist("" + pb.getId())) {
-				paperinfo_tab_text4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_praise_press, 0, 0);
-			}
-
-			imageLoader.loadDrawable(this, AppConstants.HTTPURL.serverIP + pb.getLogo(), new ImageCallback() {
-				@Override
-				public void imageLoaded(Bitmap bm, String imageUrl) {
-					if (bm != null) {
-						paperinfo_logo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getPicHigh(bm)));
-						paperinfo_logo.setImageBitmap(bm);
-					}
-				}
-			}, "paper", pb.getId() + "");
-
-			dialogUtil.showProgressDialog(this, "正在读取评论...");
+			dialogUtil.showProgressDialog(this, "正在读取数据...");
+			ThreadExecutor.execute(new GetData(this, paperHandler, AppConstants.HTTPURL.paperInfo + pb.getId(), 6));
 			ThreadExecutor.execute(new GetData(this, commentListHandler, AppConstants.HTTPURL.commentlist + pb.getId() + "&page=" + page, 7));
 			setUpListener();
 		}
@@ -141,7 +150,9 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 				if (pb != null && pb.getId() != 0) {
 					sdf = new SimpleDateFormat("MM-dd hh:mm");
 					paperinfo_comment.setText("评论:" + pb.getComments());
-					paperinfo_content.setText(pb.getContent());
+					pb.setContent(pb.getContent().replace("background-color:", ""));
+					paperinfo_content.loadDataWithBaseURL(null, new StringBuilder(AppConstants.FONT_START).append(AppConstants.BODY_START).append(pb.getContent()).append(AppConstants.BODY_END).toString(), AppConstants.TEXT_HTML, AppConstants.UTF8, null);
+					paperinfo_content.setBackgroundColor(getResources().getColor(R.color.paperinfo_content_bg));
 					paperinfo_time.setText(sdf.format(pb.getUpdated_at()));
 					paperinfo_title.setText(pb.getTitle());
 					paperinfo_view.setText("浏览:" + pb.getView_count());
@@ -151,18 +162,12 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 					if (praiseDAO.isExist("" + pb.getId())) {
 						paperinfo_tab_text4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_praise_press, 0, 0);
 					}
-					imageLoader.loadDrawable(PaperInfoActivity.this, AppConstants.HTTPURL.serverIP + pb.getLogo(), new ImageCallback() {
-						@Override
-						public void imageLoaded(Bitmap bm, String imageUrl) {
-							if (bm != null) {
-								paperinfo_logo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getPicHigh(bm)));
-								paperinfo_logo.setImageBitmap(bm);
-							}
-						}
-					}, "paper", pb.getId() + "");
+					imageLoader.displayImage(AppConstants.HTTPURL.serverIP + pb.getLogo(), paperinfo_logo, options, displayListener);
 
-					ThreadExecutor.execute(new GetData(PaperInfoActivity.this, commentListHandler, AppConstants.HTTPURL.commentlist + pb.getId() + "&page=" + page, 7));
-					setUpListener();
+					if (isPPT) {
+						ThreadExecutor.execute(new GetData(PaperInfoActivity.this, commentListHandler, AppConstants.HTTPURL.commentlist + pb.getId() + "&page=" + page, 7));
+						setUpListener();
+					}
 				}
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
@@ -225,6 +230,9 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 				if (!collectDAO.isExist("" + pb.getId())) {
 					collectDAO.save(pb);
 					paperinfo_tab_text2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_collect_press, 0, 0);
+				} else {
+					collectDAO.delete("" + pb.getId());
+					paperinfo_tab_text2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.paperinfo_collect_noraml, 0, 0);
 				}
 			}
 		});
@@ -278,7 +286,7 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 		paperinfo_tab_layout4 = (RelativeLayout) this.findViewById(R.id.paperinfo_tab_layout4);
 
 		paperinfo_comment = (TextView) this.findViewById(R.id.paperinfo_comment);
-		paperinfo_content = (TextView) this.findViewById(R.id.paperinfo_content);
+		paperinfo_content = (WebView) this.findViewById(R.id.paperinfo_content);
 		paperinfo_time = (TextView) this.findViewById(R.id.paperinfo_time);
 		paperinfo_title = (TextView) this.findViewById(R.id.paperinfo_title);
 		paperinfo_view = (TextView) this.findViewById(R.id.paperinfo_view);
@@ -293,6 +301,8 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 		collectDAO = new CollectDAO(this);
 		accountDAO = new AccountDAO(this);
 		praiseDAO = new PraiseDAO(this);
+
+		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.paperinfo_default).showImageForEmptyUri(R.drawable.paperinfo_default).showImageOnFail(R.drawable.paperinfo_default).cacheInMemory(true).cacheOnDisc(true).considerExifParams(true).displayer(new RoundedBitmapDisplayer(20)).build();
 	}
 
 	@Override
@@ -345,4 +355,24 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 		int bmWidth = bm.getWidth();
 		return mScreenWidth * bmHigh / bmWidth;
 	}
+
+	class DisplayListener extends SimpleImageLoadingListener {
+
+		final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getPicHigh(loadedImage)));
+
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
+			}
+		}
+	}
+
 }

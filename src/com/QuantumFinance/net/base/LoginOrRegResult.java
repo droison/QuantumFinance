@@ -1,38 +1,34 @@
 package com.QuantumFinance.net.base;
 
+import java.util.Date;
+
 public class LoginOrRegResult {
 	public static class Login {
-		private boolean result;
-		private String private_token;
-		private String message;
-		private String face;
-		private String username;
-		private String phone;
+		private int id;
+		private String name;
+		private String avatar;
+		private String email;
+		private String authentication_token;
+		private Date last_login_time;
 		private boolean weibo;
 		private boolean qq;
+		private String sex;
+		private String message;
 
-		public String getFace() {
-			return face;
+		public String getSex() {
+			return sex;
 		}
 
-		public void setFace(String face) {
-			this.face = face;
+		public void setSex(String sex) {
+			this.sex = sex;
 		}
 
-		public String getUsername() {
-			return username;
+		public String getMessage() {
+			return message;
 		}
 
-		public void setUsername(String username) {
-			this.username = username;
-		}
-
-		public String getPhone() {
-			return phone;
-		}
-
-		public void setPhone(String phone) {
-			this.phone = phone;
+		public void setMessage(String message) {
+			this.message = message;
 		}
 
 		public boolean isWeibo() {
@@ -51,51 +47,52 @@ public class LoginOrRegResult {
 			this.qq = qq;
 		}
 
-		public String getMessage() {
-			return message;
+		public int getId() {
+			return id;
 		}
 
-		public void setMessage(String message) {
-			this.message = message;
+		public void setId(int id) {
+			this.id = id;
 		}
 
-		public boolean isResult() {
-			return result;
+		public String getName() {
+			return name;
 		}
 
-		public void setResult(boolean result) {
-			this.result = result;
+		public void setName(String name) {
+			this.name = name;
 		}
 
-		public String getPrivate_token() {
-			return private_token;
+		public String getAvatar() {
+			return avatar;
 		}
 
-		public void setPrivate_token(String private_token) {
-			this.private_token = private_token;
+		public void setAvatar(String avatar) {
+			this.avatar = avatar;
 		}
 
-	}
-
-	public static class PhoneVerify {
-
-		private boolean result;
-		private String message;
-
-		public String getMessage() {
-			return message;
+		public String getEmail() {
+			return email;
 		}
 
-		public void setMessage(String message) {
-			this.message = message;
+		public void setEmail(String email) {
+			this.email = email;
 		}
 
-		public boolean isResult() {
-			return result;
+		public String getAuthentication_token() {
+			return authentication_token;
 		}
 
-		public void setResult(boolean result) {
-			this.result = result;
+		public void setAuthentication_token(String authentication_token) {
+			this.authentication_token = authentication_token;
+		}
+
+		public Date getLast_login_time() {
+			return last_login_time;
+		}
+
+		public void setLast_login_time(Date last_login_time) {
+			this.last_login_time = last_login_time;
 		}
 
 	}

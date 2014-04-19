@@ -1,16 +1,24 @@
 package com.QuantumFinance.ui;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
 import com.QuantumFinance.db.DbAccount;
-import com.QuantumFinance.net.AsyncImageLoader;
-import com.QuantumFinance.net.AsyncImageLoader.ImageCallback;
 import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.StringUtil;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -33,6 +41,7 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,10 +51,9 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 
 	private RelativeLayout set_headlayout, set_nicklayout, set_emaillayout, set_phonelayout, set_pwdlayout, set_snslayout;
 	private ImageView set_headimg;
-	private TextView set_nicktext, set_phonetext, set_emailtext, set_logout, set_login;
-	private LinearLayout set_snsiconlayout, set_loginlayout, set_logoutlayout;
+	private TextView set_nicktext, set_phonetext, set_emailtext, set_logout;
+	private LinearLayout set_snsiconlayout, set_loginlayout;
 	private DbAccount account;
-	private AsyncImageLoader imageLoader;
 	private AccountDAO accountDAO;
 	private DialogUtil dialogUtil = new DialogUtil();
 	private AlertDialog dlg;
@@ -54,6 +62,9 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 	private final int PHOTO_REQUEST_GALLERY = 15;
 	private File tempFile = new File(AppConstants.TEMP_HEAD_FILE_PATH);
 	private final String TAG = "SetFragment";
+	private ImageLoader imageLoader = ImageLoader.getInstance();
+	DisplayImageOptions options;
+	private ImageLoadingListener displayListener = new DisplayListener();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +84,6 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 		set_emaillayout = (RelativeLayout) this.findViewById(R.id.set_emaillayout);
 
 		set_loginlayout = (LinearLayout) this.findViewById(R.id.set_loginlayout);
-		set_logoutlayout = (LinearLayout) this.findViewById(R.id.set_logoutlayout);
 
 		set_snsiconlayout = (LinearLayout) this.findViewById(R.id.set_snsiconlayout);
 		set_headimg = (ImageView) this.findViewById(R.id.set_headimg);
@@ -82,15 +92,15 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 		set_emailtext = (TextView) this.findViewById(R.id.set_emailtext);
 
 		set_logout = (TextView) this.findViewById(R.id.set_logout);
-		set_login = (TextView) this.findViewById(R.id.set_login);
 
 		accountDAO = new AccountDAO(this);
+		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.set_default).showImageForEmptyUri(R.drawable.set_default).showImageOnFail(R.drawable.set_default).cacheInMemory(true).cacheOnDisc(true).considerExifParams(true).displayer(new RoundedBitmapDisplayer(2)).build();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-//		setUserInfo();
+		setUserInfo();
 	}
 
 	private void setUserInfo() {
@@ -101,10 +111,7 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 			finish();
 		} else {
 			set_loginlayout.setVisibility(View.VISIBLE);
-			set_logoutlayout.setVisibility(View.GONE);
 
-			if (imageLoader == null)
-				imageLoader = new AsyncImageLoader();
 			set_snsiconlayout.removeAllViews();
 			if (account.isBind_qq()) {
 				ImageView qq = new ImageView(this);
@@ -119,13 +126,7 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 				set_snsiconlayout.addView(weibo);
 			}
 
-			imageLoader.loadDrawable(this, AppConstants.HTTPURL.serverIP + account.getFace(), new ImageCallback() {
-
-				@Override
-				public void imageLoaded(Bitmap bm, String imageUrl) {
-					set_headimg.setImageBitmap(bm);
-				}
-			}, "icon", "head");
+			imageLoader.displayImage(AppConstants.HTTPURL.serverIP + account.getFace(), set_headimg, options, displayListener);
 
 			set_nicktext.setText(account.getUsername());
 			set_phonetext.setText(account.getPhone());
@@ -141,7 +142,6 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 		set_emaillayout.setOnClickListener(this);
 		set_snslayout.setOnClickListener(this);
 		set_logout.setOnClickListener(this);
-		set_login.setOnClickListener(this);
 	}
 
 	@Override
@@ -169,12 +169,9 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 			break;
 		case R.id.set_logout:
 			accountDAO.delete();
-			set_loginlayout.setVisibility(View.GONE);
-			set_logoutlayout.setVisibility(View.VISIBLE);
-			break;
-		case R.id.set_login:
 			Intent toLogin = new Intent(SetActivity.this, LoginActivity.class);
 			startActivity(toLogin);
+			finish();
 			break;
 		default:
 			break;
@@ -222,7 +219,6 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 		Window window = dlg.getWindow();
 		window.setContentView(R.layout.dialog_bindsns);
 
-
 		TextView bind_weibo = (TextView) window.findViewById(R.id.bind_weibo);
 		if (account.isBind_weibo()) {
 			bind_weibo.setVisibility(View.GONE);
@@ -244,7 +240,7 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 							}
 
 							public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
-								platform.getDb().get("weibo"); //这是微博唯一ID
+								platform.getDb().get("weibo"); // 这是微博唯一ID
 								// 此处运行绑定线程
 							}
 
@@ -282,7 +278,7 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 							}
 
 							public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
-								platform.getDb().get("weibo"); //这是QQ唯一ID
+								platform.getDb().get("weibo"); // 这是QQ唯一ID
 								// 此处运行绑定线程
 							}
 
@@ -334,9 +330,9 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 					Toast.makeText(SetActivity.this, "手机号输入不正确", Toast.LENGTH_SHORT).show();
 				} else if (type == 3 && str.length() < 8) {
 					Toast.makeText(SetActivity.this, "密码应当大于8位", Toast.LENGTH_SHORT).show();
-				} else if(type == 4 && !StringUtil.checkEmail(str)){
+				} else if (type == 4 && !StringUtil.checkEmail(str)) {
 					Toast.makeText(SetActivity.this, "请输入正确的邮箱地址", Toast.LENGTH_SHORT).show();
-				}else {
+				} else {
 					dialogUtil.showProgressDialog(SetActivity.this, "正在更新");
 					// 此处用来更新数据
 				}
@@ -415,6 +411,26 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 				break;
 			}
 			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
+
+	class DisplayListener extends SimpleImageLoadingListener {
+
+		final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(imageView.getHeight(), imageView.getHeight());
+				lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+				imageView.setLayoutParams(lp);
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
+			}
 		}
 	}
 }

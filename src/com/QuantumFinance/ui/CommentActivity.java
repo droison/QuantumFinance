@@ -3,12 +3,15 @@ package com.QuantumFinance.ui;
 import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
 import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
+import com.QuantumFinance.db.AccountDAO;
+import com.QuantumFinance.db.DbAccount;
 import com.QuantumFinance.net.PostData;
 import com.QuantumFinance.net.base.CommentBase;
 import com.QuantumFinance.net.base.PostCommentBase;
 import com.QuantumFinance.net.base.Result;
 import com.QuantumFinance.util.DialogUtil;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -31,6 +34,8 @@ public class CommentActivity extends BaiduMTJActivity {
 	private CommentBase comment;
 	private DialogUtil dialogUtil;
 	private int paper_id;
+	private AccountDAO accountDAO;
+	private DbAccount account;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,16 @@ public class CommentActivity extends BaiduMTJActivity {
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 
 		dialogUtil = new DialogUtil();
+		accountDAO = new AccountDAO(this);
 	}
 
 	private void initData() {
+		account = accountDAO.getAccount();
+		if (account == null || account.getUserid() == 0) {
+			Intent toLogin = new Intent(CommentActivity.this, LoginActivity.class);
+			startActivity(toLogin);
+			finish();
+		}
 		bundle = getIntent().getExtras();
 		isRe = bundle.getBoolean("isRe", false);
 		paper_id = bundle.getInt("paper_id");
@@ -88,11 +100,11 @@ public class CommentActivity extends BaiduMTJActivity {
 					if (comment != null) {
 						pcb.setTo_user_id(comment.getUser_id());
 					}
-					pcb.setUser_id(1);
+					pcb.setUser_id(account.getUserid());
 					pcb.setComment_id(paper_id);
 					dialogUtil.showProgressDialog(CommentActivity.this, isRe ? "正在回复" : "正在评论");
-					ThreadExecutor.execute(new PostData(CommentActivity.this, commentHandler, pcb,1));
-					
+					ThreadExecutor.execute(new PostData(CommentActivity.this, commentHandler, pcb, 1));
+
 					comment_content.clearFocus();
 				}
 			}
@@ -105,9 +117,9 @@ public class CommentActivity extends BaiduMTJActivity {
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				Result cr = (Result) msg.obj;
-				if(cr.isStatus()){
+				if (cr.isStatus()) {
 					setResult(RESULT_OK);
-				}else{
+				} else {
 					setResult(RESULT_FAILE);
 				}
 				finish();

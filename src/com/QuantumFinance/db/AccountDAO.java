@@ -1,5 +1,7 @@
 package com.QuantumFinance.db;
 
+import com.QuantumFinance.constants.AppConstants;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +12,7 @@ public class AccountDAO {
 	private DBHelper dbOpenHelper;
 
 	public AccountDAO(Context context) {
-		DBHelper.init(context);
+		DBHelper.init(context, AppConstants.databaseversion);
 		this.dbOpenHelper = DBHelper.dbHelper();
 	}
 
@@ -24,6 +26,8 @@ public class AccountDAO {
 		values.put("face", account.getFace() == null ? "" : account.getFace());
 		values.put("phone", account.getPhone() == null ? "" : account.getPhone());
 		values.put("email", account.getEmail() == null ? "" : account.getEmail());
+		values.put("sex", account.getSex() == null ? "男" : account.getSex());
+		values.put("userid", account.getUserid());
 		values.put("bind_weibo", account.isBind_weibo() ? 1 : 0);
 		values.put("bind_qq", account.isBind_qq() ? 1 : 0);
 		db.insert("account", null, values);
@@ -41,8 +45,11 @@ public class AccountDAO {
 			dbAccount.setToken(cursor.getString(2));
 			dbAccount.setFace(cursor.getString(3));
 			dbAccount.setPhone(cursor.getString(4));
-			dbAccount.setBind_weibo(cursor.getInt(5) == 1);
-			dbAccount.setBind_qq(cursor.getInt(6) == 1);
+			dbAccount.setEmail(cursor.getString(5));
+			dbAccount.setBind_weibo(cursor.getInt(6) == 1);
+			dbAccount.setBind_qq(cursor.getInt(7) == 1);
+			dbAccount.setUserid(cursor.getInt(8));
+			dbAccount.setSex(cursor.getString(9));
 		}
 		cursor.close();
 		return dbAccount;

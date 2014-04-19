@@ -2,6 +2,8 @@ package com.QuantumFinance.net;
 
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.HttpResponseEntity;
+import com.QuantumFinance.net.base.LoginOrRegResult;
+import com.QuantumFinance.net.base.RegResult;
 import com.QuantumFinance.net.base.Result;
 import com.QuantumFinance.util.StringUtil;
 import com.alibaba.fastjson.JSON;
@@ -55,6 +57,11 @@ public class PostData implements Runnable {
 
 		HttpResponseEntity hre = HTTP.postByHttpUrlConnection(url, obj);
 		switch (hre.getHttpResponseCode()) {
+		case 422:
+		case 2:
+			// 此处为注册的问题
+			mHandler.sendEmptyMessage(AppConstants.HANDLER_MESSAGE_NULL);
+			break;
 		case 200:
 			try {
 				String json = StringUtil.byte2String(hre.getB());
@@ -63,6 +70,14 @@ public class PostData implements Runnable {
 				case 1:
 					Result result = JSON.parseObject(json, Result.class);
 					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, result));
+					break;
+				case 2:
+					RegResult regResult = JSON.parseObject(json, RegResult.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, regResult));
+					break;
+				case 3:
+					LoginOrRegResult.Login login = JSON.parseObject(json, LoginOrRegResult.Login.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, login));
 					break;
 				default:
 					break;

@@ -60,10 +60,9 @@
 
                     <ImageView
                         android:id="@+id/recommendinfo_logo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_margin="3dp"
-                        android:adjustViewBounds="true"
                         android:src="@drawable/logo_qq" />
 
                     <TextView
@@ -111,7 +110,7 @@
                     android:background="@drawable/recommendinfo_title_bg2" />
             </LinearLayout>
 
-            <TextView
+            <WebView
                 android:id="@+id/recommendinfo_description"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"

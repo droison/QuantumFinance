@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.PaperBase;
 
 import android.content.ContentValues;
@@ -16,7 +17,7 @@ public class CollectDAO {
 	private DBHelper dbOpenHelper;
 
 	public CollectDAO(Context context) {
-		DBHelper.init(context);
+		DBHelper.init(context,AppConstants.databaseversion);
 		this.dbOpenHelper = DBHelper.dbHelper();
 	}
 
@@ -43,6 +44,7 @@ public class CollectDAO {
 				values.put("logo", paper.getLogo());
 			}
 			values.put("update_at", paper.getUpdated_at().getTime());
+			values.put("synopsis", paper.getSynopsis());
 			db.insert("collect", null, values);
 		}
 	}
@@ -72,6 +74,7 @@ public class CollectDAO {
 			paper.setComments(cursor.getInt(6));
 			paper.setLogo(cursor.getString(7));
 			paper.setUpdated_at(new Date(cursor.getLong(8)));
+			paper.setSynopsis(cursor.getString(9));
 			papers.add(paper);
 		}
 

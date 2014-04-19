@@ -1,21 +1,16 @@
 package com.QuantumFinance.ui;
 
 import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
-import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
-import com.QuantumFinance.net.base.LoginOrRegResult;
-import com.QuantumFinance.net.base.LoginOrRegResult.PhoneVerify;
 import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.StringUtil;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LostPwdActivity extends BaiduMTJActivity implements OnClickListener {
@@ -55,13 +50,6 @@ public class LostPwdActivity extends BaiduMTJActivity implements OnClickListener
 			dialogUtil.dismissDownloadDialog();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
-				LoginOrRegResult.PhoneVerify pv3 = (PhoneVerify) msg.obj;
-				if (pv3.isResult()) {
-					dialogUtil.showToast(LostPwdActivity.this, "修改成功");
-					finish();
-				} else {
-					dialogUtil.showToast(LostPwdActivity.this, "错误：" + pv3.getMessage());
-				}
 				break;
 			case AppConstants.HANDLER_MESSAGE_NONETWORK:
 				dialogUtil.showNoNetWork(LostPwdActivity.this);

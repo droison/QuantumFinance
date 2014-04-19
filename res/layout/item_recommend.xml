@@ -6,10 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_recommend_hight"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="8dp"
         android:background="@color/item_recommend_bg"
         android:orientation="horizontal" >
 
@@ -27,10 +25,9 @@
 
                 <ImageView
                     android:id="@+id/item_recommend_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_margin="3dp"
-                    android:adjustViewBounds="true"
                     android:src="@drawable/logo_qq" />
 
                 <RelativeLayout
@@ -128,13 +125,14 @@
 
                 <TextView
                     android:id="@+id/item_recommend_schedule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:gravity="center"
-                    android:text="85%"
+                    android:text="100%"
                     android:textColor="@color/blue"
-                    android:textSize="16sp" />
+                    android:maxLines="1"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -152,7 +150,7 @@
             android:layout_weight="4"
             android:background="@drawable/item_recommend_bg3"
             android:orientation="vertical"
-            android:padding="5dp" >
+            >
 
             <TextView
                 android:id="@+id/item_recommend_eair"
@@ -162,8 +160,10 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="12.18%"
+                android:typeface="sans"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:ellipsize="marquee"
+                android:textSize="26sp" />
 
             <TextView
                 android:layout_width="match_parent"

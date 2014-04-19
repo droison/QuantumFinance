@@ -22,10 +22,13 @@ public class ICollectActivity extends BaiduMTJActivity {
 		
 		icollect_listview = (ListView) this.findViewById(R.id.icollect_listview);
 		collectDAO = new CollectDAO(this);
-		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		List<PaperBase> pbs = collectDAO.getAll();
 		PaperAdapter adapter = new PaperAdapter(pbs, this);
 		icollect_listview.setAdapter(adapter);
 	}
-
 }

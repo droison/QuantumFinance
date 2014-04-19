@@ -7,6 +7,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -15,8 +17,6 @@ import java.util.concurrent.TimeUnit;
 import com.QuantumFinance.BaiduMTJ.BaiduMTJFragment;
 import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
-import com.QuantumFinance.net.AsyncImageLoader;
-import com.QuantumFinance.net.AsyncImageLoader.ImageCallback;
 import com.QuantumFinance.net.GetData;
 import com.QuantumFinance.net.base.PPTBase;
 import com.QuantumFinance.net.base.RecommendBase;
@@ -27,8 +27,12 @@ import com.QuantumFinance.ui.PaperInfoActivity;
 import com.QuantumFinance.ui.adapter.RecommendAdapter;
 import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.DpSpDip2Px;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -39,7 +43,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
@@ -64,8 +67,9 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 	private DialogUtil dialogUtil;
 	private LinearLayout recommend_list;
 	private String pptUrl;
-	private AsyncImageLoader asynImageLoader;
-
+	private ImageLoader imageLoader = ImageLoader.getInstance();
+	DisplayImageOptions pptOptions;
+	private ImageLoadingListener displayListener = new DisplayListener();
 	private RecommendAdapter recommendAdapter;
 	private int type = 2; // 1是稳健型，2是激进型 激进型=radical，稳健型＝solid
 	private DpSpDip2Px dp2sp;
@@ -86,6 +90,7 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 	}
 
 	private void initData() {
+		type = 2;
 		ThreadExecutor.execute(new GetData(parentActivity, pptHandler, pptUrl, 3));
 		ThreadExecutor.execute(new GetData(parentActivity, recommendListHandler, serverUrl, 1));
 		dialogUtil.showProgressDialog(parentActivity, "正在更新数据...");
@@ -106,15 +111,7 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 					final PPTBase pb = pbs.get(i);
 					final ImageView imageView = new ImageView(parentActivity);
 					imageView.setImageResource(R.drawable.image_default);
-					asynImageLoader.loadDrawable(parentActivity, AppConstants.HTTPURL.serverIP + pb.getPpt_logo(), new ImageCallback() {
-
-						@Override
-						public void imageLoaded(Bitmap bm, String imageUrl) {
-							if (bm != null)
-								imageView.setImageBitmap(bm);
-						}
-					}, "ppt", "ppt_" + pb.getId() + ".jpg");
-					imageView.setScaleType(ScaleType.CENTER_CROP);
+					imageLoader.displayImage(AppConstants.HTTPURL.serverIP + pb.getPpt_logo(), imageView, pptOptions,displayListener);
 
 					imageView.setOnClickListener(new OnClickListener() {
 						@Override
@@ -168,7 +165,6 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 		viewPager = (ViewPager) root.findViewById(R.id.recommend_ppt);
 		viewPager.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dp2sp.getPPTHigh()));
 		dialogUtil = new DialogUtil();
-		asynImageLoader = new AsyncImageLoader();
 		recommend_list = (LinearLayout) root.findViewById(R.id.recommend_list);
 		recommend_tab_layout2 = (RelativeLayout) root.findViewById(R.id.recommend_tab_layout2);
 		recommend_tab_layout1 = (RelativeLayout) root.findViewById(R.id.recommend_tab_layout1);
@@ -176,6 +172,7 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 		recommend_tab_text1 = (TextView) root.findViewById(R.id.recommend_tab_text1);
 		recommend_tab_text2 = (TextView) root.findViewById(R.id.recommend_tab_text2);
 
+		pptOptions = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ppt_default).showImageForEmptyUri(R.drawable.ppt_default).showImageOnFail(R.drawable.ppt_default).cacheInMemory(true).cacheOnDisc(true).considerExifParams(true).build();
 	}
 
 	private void setUpListener() {
@@ -202,6 +199,8 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				List<RecommendBase> rbs = (List<RecommendBase>) msg.obj;
+				LinearLayout.LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+				lp.setMargins(5, 10, 5, 10);
 				if (rbs == null || rbs.size() == 0) {
 					Toast.makeText(parentActivity, "没有数据", Toast.LENGTH_SHORT).show();
 				} else {
@@ -210,6 +209,7 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 					int count = recommendAdapter.getCount();
 					for (int i = 0; i < count; i++) {
 						View v = recommendAdapter.getDropDownView(i, null, null);
+						v.setLayoutParams(lp);
 						recommend_list.addView(v);
 					}
 					switchTab();
@@ -342,6 +342,24 @@ public class RecommendFragment extends BaiduMTJFragment implements OnClickListen
 			recommend_tab_text2.setTextColor(Color.rgb(31, 141, 215));
 			// 切换tab样式
 			type = 1;
+		}
+	}
+	class DisplayListener extends SimpleImageLoadingListener {
+
+		final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+//				imageView.setScaleType(ScaleType.CENTER_CROP);
+				imageView.setAdjustViewBounds(true);
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
+			}
 		}
 	}
 

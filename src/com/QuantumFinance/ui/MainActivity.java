@@ -13,6 +13,9 @@ import com.QuantumFinance.updateapp.UpdateHandler;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -134,6 +137,46 @@ public class MainActivity extends BaiduMTJFragmentActivity {
 			break;
 		default:
 			break;
+		}
+	}
+
+	boolean mIsCanEixt;
+
+	/**
+	 * 　　* Fragment跳转 　　* @param fm 　　* @param fragmentClass 　　* @param tag 　　* @param
+	 * args 　　
+	 */
+	public void turnToFragment(FragmentManager fm, Class fragmentClass, String tag, Bundle args) {
+		mIsCanEixt = false;
+		Fragment fragment = fm.findFragmentByTag(tag);
+		boolean isFragmentExist = true;
+		if (fragment == null) {
+			try {
+				isFragmentExist = false;
+				fragment = (Fragment) fragmentClass.newInstance();
+				fragment.setArguments(new Bundle());
+			} catch (java.lang.InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			if (fragment.isAdded()) {
+				return;
+			}
+
+		}
+		if (args != null && !args.isEmpty()) {
+			fragment.getArguments().putAll(args);
+		}
+		FragmentTransaction ft = fm.beginTransaction();
+		ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+		if (isFragmentExist) {
+			fm.popBackStack();
+//			ft.replace(R.id.main_content_frame, fragment);
+		} else {
+			ft.replace(R.id.main_content_frame, fragment, tag);
+			ft.addToBackStack(tag);
+			ft.commitAllowingStateLoss();
 		}
 	}
 

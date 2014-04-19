@@ -6,12 +6,11 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
 import com.QuantumFinance.db.DbAccount;
 import com.QuantumFinance.net.PostData;
-import com.QuantumFinance.net.base.LoginOrRegResult;
 import com.QuantumFinance.net.base.RegBase;
+import com.QuantumFinance.net.base.RegResult;
 import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.StringUtil;
 
-import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -22,7 +21,7 @@ import android.widget.TextView;
 
 public class RegisterActivity extends BaiduMTJActivity implements OnClickListener {
 
-	private EditText reg_username, reg_password,reg_email, reg_repassword;
+	private EditText reg_username, reg_password, reg_email, reg_repassword;
 	private TextView reg_reg, reg_login;
 	private DialogUtil dialogUtil;
 	private AccountDAO accountDAO;
@@ -35,6 +34,7 @@ public class RegisterActivity extends BaiduMTJActivity implements OnClickListene
 		initData();
 		setUpView();
 	}
+
 	private void setUpView() {
 		reg_username = (EditText) this.findViewById(R.id.reg_username);
 		reg_password = (EditText) this.findViewById(R.id.reg_password);
@@ -60,19 +60,27 @@ public class RegisterActivity extends BaiduMTJActivity implements OnClickListene
 			dialogUtil.dismissProgressDialog();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
-				LoginOrRegResult.Reg reg = (LoginOrRegResult.Reg) msg.obj;
-				if (reg.isResult()) {
-					dbAccount.setToken(reg.getPrivate_token());
+				RegResult reg = (RegResult) msg.obj;
+				if (reg.getError() != null) {
+					dialogUtil.showToast(RegisterActivity.this, "邮箱已存在");
+				} else if (reg.getId() == 0) {
+					dialogUtil.showToast(RegisterActivity.this, "注册失败，请稍后重试");
+				} else {
+					dbAccount.setToken(reg.getAuthentication_token());
+					dbAccount.setUserid(reg.getId());
+					dbAccount.setSex(reg.getSex());
 					accountDAO.save(dbAccount);
 					setResult(RESULT_OK);
-					dialogUtil.showToast(RegisterActivity.this, "成功");
+					dialogUtil.showToast(RegisterActivity.this, "注册成功");
 					finish();
-				} else {
-					dialogUtil.showToast(RegisterActivity.this, reg.getMessage());
 				}
 				break;
 			case AppConstants.HANDLER_MESSAGE_NONETWORK:
 				dialogUtil.showNoNetWork(RegisterActivity.this);
+				break;
+			case AppConstants.HANDLER_MESSAGE_NULL:
+				dialogUtil.showToast(RegisterActivity.this, "注册成功");
+				finish();
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
 				dialogUtil.showToast(RegisterActivity.this, "注册失败，请稍后重试");
@@ -104,14 +112,16 @@ public class RegisterActivity extends BaiduMTJActivity implements OnClickListene
 				dialogUtil.showToast(this, "密码长度要大于8位");
 			} else if (!password.equals(rePassword)) {
 				dialogUtil.showToast(this, "两次密码输入不一致");
-			} else if(TextUtils.isEmpty(email)){
+			} else if (TextUtils.isEmpty(email)) {
 				dialogUtil.showToast(this, "请输入邮箱");
-			}else if(!StringUtil.checkEmail(email)){
+			} else if (!StringUtil.checkEmail(email)) {
 				dialogUtil.showToast(this, "请正确输入邮箱地址");
-			}else {
+			} else {
 				dialogUtil.showProgressDialog(this, "正在注册");
-				//开始注册线程
-				RegBase rb = new RegBase(email, password, rePassword);
+				dbAccount.setUsername(username);
+				dbAccount.setEmail(email);
+				// 开始注册线程
+				RegBase rb = new RegBase(username, email, password, rePassword);
 				ThreadExecutor.execute(new PostData(RegisterActivity.this, regHandler, rb, 2));
 			}
 			break;

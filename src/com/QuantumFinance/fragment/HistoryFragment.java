@@ -39,7 +39,7 @@ public class HistoryFragment extends BaiduMTJFragment implements PullToRefreshVi
 
 	private LayoutInflater layoutInflater;
 	private SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy年");
-	private SimpleDateFormat sdf2 = new SimpleDateFormat("MM月dd");
+	private SimpleDateFormat sdf2 = new SimpleDateFormat("MM月dd日");
 	private SimpleDateFormat sdf3 = new SimpleDateFormat("yyyyMMdd");
 	private String lastDate = "";
 
@@ -58,6 +58,7 @@ public class HistoryFragment extends BaiduMTJFragment implements PullToRefreshVi
 	}
 
 	private void initData() {
+		page = 1;
 		ThreadExecutor.execute(new GetData(parentActivity, historyListHandler, AppConstants.HTTPURL.history + page, 9));
 		dialogUtil.showProgressDialog(parentActivity, "正在更新数据...");
 	}

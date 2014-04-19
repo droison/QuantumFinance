@@ -31,9 +31,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		return dbHelper;
 	}
 
-	public static void init(Context context) {
+	public static void init(Context context, int version) {
 		if (dbHelper == null) {
-			dbHelper = new DBHelper(context);
+			dbHelper = new DBHelper(context, version);
 		}
 	}
 
@@ -41,30 +41,16 @@ public class DBHelper extends SQLiteOpenHelper {
 		super(context, "LzFinance.db", null, 1);
 	}
 
+	public DBHelper(Context context, int version) {
+		super(context, "LzFinance.db", null, version);
+	}
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String account = "create table account"
-				+ "(id integer primary key,"
-				+ "username varchar(255),"
-				+ "token varchar(255),"
-				+ "face varchar(255),"
-				+ "phone varchar(20),"
-				+ "email varchar(255),"
-				+ "bind_weibo integer,"  //1表示已经绑定，0表示未绑定
-				+ "bind_qq integer);";
-		String praise = "create table praise"
-				+ "(id integer primary key,"
-				+ "paper_id integer);";
-		String collect = "create table collect"
-				+ "(id integer primary key,"
-				+ "paper_id integer,"
-				+ "title varchar(55),"
-				+ "lable varchar(55),"
-				+ "content varchar(255),"
-				+ "view_count integer,"  
-				+ "comments integer," 
-				+ "logo varchar(255),"
-				+ "update_at long);";
+		String account = "create table account" + "(id integer primary key," + "username varchar(255)," + "token varchar(255)," + "face varchar(255)," + "phone varchar(20)," + "email varchar(255)," + "bind_weibo integer," // 1表示已经绑定，0表示未绑定
+				+ "bind_qq integer,"+"userid integer," +"sex varchar(25) default '男');";
+		String praise = "create table praise" + "(id integer primary key," + "paper_id integer);";
+		String collect = "create table collect" + "(id integer primary key," + "paper_id integer," + "title varchar(55)," + "lable varchar(55)," + "content varchar(255)," + "view_count integer," + "comments integer," + "logo varchar(255)," + "update_at long," + "synopsis varchar(255));";
 		db.execSQL(account);
 		db.execSQL(praise);
 		db.execSQL(collect);
@@ -72,10 +58,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF account");
-		db.execSQL("DROP TABLE IF praise");
-		db.execSQL("DROP TABLE IF collect");
-		onCreate(db);
+		if (newVersion > oldVersion) {
+			db.execSQL("DROP TABLE account");
+			db.execSQL("DROP TABLE praise");
+			db.execSQL("DROP TABLE collect");
+			onCreate(db);
+		}
+
 	}
 
 }
