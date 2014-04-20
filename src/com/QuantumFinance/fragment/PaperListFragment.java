@@ -23,7 +23,6 @@ import com.QuantumFinance.ui.component.PullToRefreshView;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 public class PaperListFragment extends BaiduMTJFragment implements PullToRefreshView.OnHeaderRefreshListener, PullToRefreshView.OnFooterRefreshListener {
