@@ -138,37 +138,44 @@ public class RecommendInfoActivity extends BaiduMTJActivity {
 		recommendinfo_show_url.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (rib.getShow_url() != null && !rib.getShow_url().equals("")) {
-					Intent intent = new Intent();
-					intent.setAction("android.intent.action.VIEW");
-					Uri content_url = Uri.parse(rib.getShow_url());
-					intent.setData(content_url);
-					startActivity(intent);
+
+				if (rib.getTitle().contains("余额宝")) {
+					try {
+						launchOtherApp("com.eg.android.AlipayGphone");
+					} catch (NameNotFoundException e) {
+						openUrl();
+						e.printStackTrace();
+					} catch (NullPointerException e) {
+						openUrl();
+						e.printStackTrace();
+					}
+					return;
+				} else {
+					openUrl();
 				}
 
 			}
 		});
 	}
 
-	private void launchOtherApp(String packageName) throws NameNotFoundException {
-		PackageManager pm = getPackageManager();
-		PackageInfo pi = pm.getPackageInfo(packageName, 0);
-
-		Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-		resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		resolveIntent.setPackage(pi.packageName);
-		
-		List<ResolveInfo> apps = pm.queryIntentActivities(resolveIntent, 0);
-
-		ResolveInfo ri = apps.iterator().next();
-		if (ri != null) {
-			packageName = ri.activityInfo.packageName;
-			String className = ri.activityInfo.name;
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			ComponentName cn = new ComponentName(packageName, className);
-			intent.setComponent(cn);
+	private void openUrl() {
+		if (rib.getShow_url() != null && !rib.getShow_url().equals("")) {
+			Intent intent = new Intent();
+			intent.setAction("android.intent.action.VIEW");
+			Uri content_url = Uri.parse(rib.getShow_url());
+			intent.setData(content_url);
 			startActivity(intent);
+		}
+	}
+
+	private void launchOtherApp(String packageName) throws NameNotFoundException, NullPointerException {
+		PackageManager pm = getPackageManager();
+		Intent intent = new Intent();
+		intent = pm.getLaunchIntentForPackage(packageName);
+		if(intent==null){
+			throw new NullPointerException();
+		}else{
+			
 		}
 	}
 

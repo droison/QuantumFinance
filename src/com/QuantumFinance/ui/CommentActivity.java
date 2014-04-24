@@ -102,6 +102,7 @@ public class CommentActivity extends BaiduMTJActivity {
 					}
 					pcb.setUser_id(account.getUserid());
 					pcb.setComment_id(paper_id);
+					pcb.setToken(account.getToken());
 					dialogUtil.showProgressDialog(CommentActivity.this, isRe ? "正在回复" : "正在评论");
 					ThreadExecutor.execute(new PostData(CommentActivity.this, commentHandler, pcb, 1));
 
@@ -121,6 +122,7 @@ public class CommentActivity extends BaiduMTJActivity {
 					setResult(RESULT_OK);
 				} else {
 					setResult(RESULT_FAILE);
+					Toast.makeText(CommentActivity.this, "失败：" + cr.getMessage(), Toast.LENGTH_SHORT).show();
 				}
 				finish();
 				break;

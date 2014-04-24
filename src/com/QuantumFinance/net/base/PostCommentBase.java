@@ -11,6 +11,15 @@ public class PostCommentBase implements Serializable {
 	private Integer comment_id;
 	private String content;
 	private Integer to_user_id;
+	private String token;
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public Integer getUser_id() {
 		return user_id;

@@ -8,7 +8,7 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
 import com.QuantumFinance.db.DbAccount;
 import com.QuantumFinance.net.PostData;
-import com.QuantumFinance.net.base.LoginBase;
+import com.QuantumFinance.net.base.PostLoginBase;
 import com.QuantumFinance.net.base.LoginOrRegResult;
 import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.StringUtil;
@@ -149,7 +149,7 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 			} else {
 				dialogUtil.showProgressDialog(this, "正在登录");
 
-				LoginBase lb = new LoginBase(email, password);
+				PostLoginBase lb = new PostLoginBase(email, password);
 				ThreadExecutor.execute(new PostData(LoginActivity.this, loginHandler, lb, 3));
 			}
 			break;

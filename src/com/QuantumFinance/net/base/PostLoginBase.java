@@ -1,11 +1,11 @@
 package com.QuantumFinance.net.base;
 
-public class LoginBase {
+public class PostLoginBase {
 	
 		private String password;
 		private String email;
 
-		public LoginBase(String email, String password) {
+		public PostLoginBase(String email, String password) {
 			this.email = email;
 			this.password = password;
 		}

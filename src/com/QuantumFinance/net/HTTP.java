@@ -93,7 +93,6 @@ public class HTTP {
 			httpConn.setRequestMethod("POST");// 设置URL请求方法
 
 			String requestString = JSON.toJSONString(o);
-			Log.d("HTTp", requestString);
 			byte[] requestStringBytes = requestString.getBytes("utf-8");// 获得数据字节数据，请求数据流的编码，必须和下面服务器端处理请求流的编码一致
 			httpConn.setRequestProperty("Content-length", "" + requestStringBytes.length);
 			httpConn.setRequestProperty("Content-Type", "application/json");
@@ -320,7 +319,7 @@ public class HTTP {
 		HttpResponseEntity hre = new HttpResponseEntity();
 		InputStream input = null;
 		try {
-			HttpEntity requestHttpEntity = new UrlEncodedFormEntity(pairList);
+			HttpEntity requestHttpEntity = new UrlEncodedFormEntity(pairList, org.apache.http.protocol.HTTP.UTF_8);
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.setEntity(requestHttpEntity);
 			HttpClient httpClient = new DefaultHttpClient();
@@ -352,7 +351,7 @@ public class HTTP {
 	}
 
 	public static HttpResponseEntity get(String URL) {
-		String url = URL;
+		String url = URL + "&token=";
 		Log.i("HTTP_URL", url);
 
 		HttpGet listGet = new HttpGet(url);

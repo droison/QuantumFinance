@@ -1,8 +1,15 @@
 package com.QuantumFinance.net;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.HttpResponseEntity;
 import com.QuantumFinance.net.base.LoginOrRegResult;
+import com.QuantumFinance.net.base.PostCommentBase;
 import com.QuantumFinance.net.base.RegResult;
 import com.QuantumFinance.net.base.Result;
 import com.QuantumFinance.util.StringUtil;
@@ -54,8 +61,19 @@ public class PostData implements Runnable {
 			mHandler.sendEmptyMessage(AppConstants.HANDLER_MESSAGE_NONETWORK);
 			return;
 		}
-
-		HttpResponseEntity hre = HTTP.postByHttpUrlConnection(url, obj);
+		HttpResponseEntity hre = null;
+		if (type == 1) {
+			PostCommentBase pcb = (PostCommentBase) obj;
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("token", pcb.getToken()));
+			params.add(new BasicNameValuePair("user_id", pcb.getUser_id() + ""));
+			params.add(new BasicNameValuePair("to_user_id", pcb.getTo_user_id() + ""));
+			params.add(new BasicNameValuePair("comment_id", pcb.getComment_id() + ""));
+			params.add(new BasicNameValuePair("content", pcb.getContent()));
+			hre = HTTP.post(url, params);
+		} else {
+			hre = HTTP.postByHttpUrlConnection(url, obj);
+		}
 		switch (hre.getHttpResponseCode()) {
 		case 422:
 		case 2:
@@ -94,5 +112,4 @@ public class PostData implements Runnable {
 			break;
 		}
 	}
-
 }
