@@ -10,6 +10,7 @@ import com.QuantumFinance.db.DbAccount;
 import com.QuantumFinance.net.PostData;
 import com.QuantumFinance.net.base.PostLoginBase;
 import com.QuantumFinance.net.base.LoginOrRegResult;
+import com.QuantumFinance.net.base.PostSocialLoginBase;
 import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.StringUtil;
 
@@ -22,6 +23,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -92,9 +94,12 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 
 				public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
 					String weiboId = platform.getDb().get("weibo");
+					String sex = ((Integer) res.get("gender")) == 0 ? "男" : "女";
 					String imageUrl = (String) res.get("profile_image_url");
 					String nickname = (String) res.get("screen_name");
+					PostSocialLoginBase pslb = new PostSocialLoginBase(weiboId, nickname, sex);
 
+					ThreadExecutor.execute(new PostData(LoginActivity.this, loginHandler, pslb, 4));
 					// 运行社交帐号注册登录线程
 				}
 
@@ -123,9 +128,13 @@ public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 				public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
 
 					String weiboId = platform.getDb().get("weibo");
+					String sex = (String) res.get("gender");
 					String nickname = (String) res.get("nickname");
 					String imageUrl = (String) res.get("figureurl_2");
 
+					PostSocialLoginBase pslb = new PostSocialLoginBase(weiboId, nickname, sex);
+
+					ThreadExecutor.execute(new PostData(LoginActivity.this, loginHandler, pslb, 4));
 					// 运行社交帐号注册登录线程
 				}
 

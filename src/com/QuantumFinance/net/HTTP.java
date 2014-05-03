@@ -37,6 +37,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
+import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.HttpResponseEntity;
 import com.alibaba.fastjson.JSON;
 
@@ -350,8 +351,9 @@ public class HTTP {
 
 	}
 
-	public static HttpResponseEntity get(String URL) {
-		String url = URL + "&token=";
+	public static HttpResponseEntity get(String url) {
+		if (!url.equals(AppConstants.HTTPURL.checkVersion))
+			url += "&token=";
 		Log.i("HTTP_URL", url);
 
 		HttpGet listGet = new HttpGet(url);

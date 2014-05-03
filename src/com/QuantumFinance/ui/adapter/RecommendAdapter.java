@@ -78,7 +78,7 @@ public class RecommendAdapter extends BaseAdapter {
 		ProgressBar item_recommend_progressbar = (ProgressBar) converView.findViewById(R.id.item_recommend_progressbar);
 		item_recommend_deadline.setText(rb.getDeadline());
 		item_recommend_eair.setText(rb.getEair());
-		item_recommend_eair.setTypeface(typeFace);
+//		item_recommend_eair.setTypeface(typeFace);
 		imageLoader.displayImage(AppConstants.HTTPURL.serverIP + rb.getLogo(), item_recommend_logo, options, displayListener);
 		item_recommend_title.setText(rb.getTitle());
 		if (rb.getSchedule().equals("无")) {

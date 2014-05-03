@@ -42,6 +42,7 @@
         android:layout_height="match_parent"
         android:divider="@color/white"
         android:scrollbars="none"
+        android:descendantFocusability="blocksDescendants"
         android:layout_margin="5dp" >
     </ListView>
 

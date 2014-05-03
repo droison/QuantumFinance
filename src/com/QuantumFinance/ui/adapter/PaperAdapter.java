@@ -12,21 +12,23 @@ import com.QuantumFinance.util.DpSpDip2Px;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 public class PaperAdapter extends BaseAdapter {
@@ -37,12 +39,14 @@ public class PaperAdapter extends BaseAdapter {
 	DisplayImageOptions options;
 	private ImageLoadingListener displayListener = new DisplayListener();
 	private DpSpDip2Px dp2px;
+	private Handler mHandler;
 
-	public PaperAdapter(List<PaperBase> pbs, Context mContext) {
+	public PaperAdapter(List<PaperBase> pbs, Context mContext, Handler mHandler) {
 		this.pbs = pbs;
 		this.mContext = mContext;
 		this.layoutInflater = LayoutInflater.from(mContext);
 		dp2px = new DpSpDip2Px(mContext);
+		this.mHandler = mHandler;
 		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.img_default).showImageForEmptyUri(R.drawable.img_default).showImageOnFail(R.drawable.img_default).cacheInMemory(false).cacheOnDisc(true).build();
 	}
 
@@ -88,7 +92,16 @@ public class PaperAdapter extends BaseAdapter {
 			}
 		};
 		converView.setOnClickListener(click);
+		converView.setOnLongClickListener(new OnLongClickListener() {
 
+			@Override
+			public boolean onLongClick(View arg0) {
+				if (mHandler != null) {
+					mHandler.sendEmptyMessage(pb.getId());
+				}
+				return true;
+			}
+		});
 		return converView;
 	}
 
@@ -101,15 +114,16 @@ public class PaperAdapter extends BaseAdapter {
 			if (loadedImage != null) {
 				ImageView imageView = (ImageView) view;
 				int h = dp2px.dip2px(98);
-				int w = h*loadedImage.getWidth()/loadedImage.getHeight();
+				int w = h * loadedImage.getWidth() / loadedImage.getHeight();
 				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
-				imageView.setLayoutParams(lp);
+				// imageView.setLayoutParams(lp);
+				imageView.setScaleType(ScaleType.CENTER_CROP);
 				boolean firstDisplay = !displayedImages.contains(imageUri);
 				if (firstDisplay) {
 					FadeInBitmapDisplayer.animate(imageView, 500);
 					displayedImages.add(imageUri);
 				}
-			}else{
+			} else {
 				ImageView imageView = (ImageView) view;
 				int h = imageView.getHeight();
 				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(h, h);

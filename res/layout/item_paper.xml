@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:paddingLeft="10dp"
+        android:focusable="false"
         android:paddingRight="10dp"
         android:paddingTop="10dp" >
 
@@ -20,9 +21,9 @@
 
             <ImageView
                 android:id="@+id/item_paper_logo"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
+                android:scaleType="centerInside"
                 android:background="@color/white"
                 android:src="@drawable/img_default" />
         </FrameLayout>

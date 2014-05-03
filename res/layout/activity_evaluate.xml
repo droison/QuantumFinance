@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="吴此人"
+                        android:hint="请输入您的姓名"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="工程师"
+                        android:hint="请输入您的职业"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="300000"
+                        android:hint="请输入您的年收入"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -247,7 +247,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="稳健型（10%左右损失）"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -279,7 +278,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="P2P信贷理财"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -311,7 +309,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="有房，全额付款"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -343,7 +340,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="其他"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>

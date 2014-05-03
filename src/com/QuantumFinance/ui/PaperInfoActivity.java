@@ -214,6 +214,7 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 	private void setUpListener() {
 		paperinfo_pullview.setOnHeaderRefreshListener(this);
 		paperinfo_pullview.setOnFooterRefreshListener(this);
+		paperinfo_pullview.setHeadRefresh(false);
 		paperinfo_tab_layout1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

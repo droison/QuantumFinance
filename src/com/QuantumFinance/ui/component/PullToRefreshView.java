@@ -126,6 +126,7 @@ public class PullToRefreshView extends LinearLayout {
 	private OnHeaderRefreshListener mOnHeaderRefreshListener;
 
 	private boolean isFooterRefresh = true;
+	private boolean isHeadRefresh = true;
 
 	public PullToRefreshView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -403,20 +404,22 @@ public class PullToRefreshView extends LinearLayout {
 	 *            ,手指滑动的距离
 	 */
 	private void headerPrepareToRefresh(int deltaY) {
-		int newTopMargin = changingHeaderViewTopMargin(deltaY);
-		// 当header view的topMargin>=0时，说明已经完全显示出来了,修改header view 的提示状态
-		if (newTopMargin >= 0 && mHeaderState != RELEASE_TO_REFRESH) {
-			mHeaderTextView.setText(R.string.pull_to_refresh_release_label);
-			mHeaderUpdateTextView.setVisibility(View.VISIBLE);
-			mHeaderImageView.clearAnimation();
-			mHeaderImageView.startAnimation(mFlipAnimation);
-			mHeaderState = RELEASE_TO_REFRESH;
-		} else if (newTopMargin < 0 && newTopMargin > -mHeaderViewHeight) {// 拖动时没有释放
-			mHeaderImageView.clearAnimation();
-			mHeaderImageView.startAnimation(mFlipAnimation);
-			// mHeaderImageView.
-			mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
-			mHeaderState = PULL_TO_REFRESH;
+		if(isHeadRefresh){
+			int newTopMargin = changingHeaderViewTopMargin(deltaY);
+			// 当header view的topMargin>=0时，说明已经完全显示出来了,修改header view 的提示状态
+			if (newTopMargin >= 0 && mHeaderState != RELEASE_TO_REFRESH) {
+				mHeaderTextView.setText(R.string.pull_to_refresh_release_label);
+				mHeaderUpdateTextView.setVisibility(View.VISIBLE);
+				mHeaderImageView.clearAnimation();
+				mHeaderImageView.startAnimation(mFlipAnimation);
+				mHeaderState = RELEASE_TO_REFRESH;
+			} else if (newTopMargin < 0 && newTopMargin > -mHeaderViewHeight) {// 拖动时没有释放
+				mHeaderImageView.clearAnimation();
+				mHeaderImageView.startAnimation(mFlipAnimation);
+				// mHeaderImageView.
+				mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
+				mHeaderState = PULL_TO_REFRESH;
+			}
 		}
 	}
 
@@ -482,15 +485,17 @@ public class PullToRefreshView extends LinearLayout {
 	 * 
 	 */
 	private void headerRefreshing() {
-		mHeaderState = REFRESHING;
-		setHeaderTopMargin(0);
-		mHeaderImageView.setVisibility(View.GONE);
-		mHeaderImageView.clearAnimation();
-		mHeaderImageView.setImageDrawable(null);
-		mHeaderProgressBar.setVisibility(View.VISIBLE);
-		mHeaderTextView.setText(R.string.pull_to_refresh_refreshing_label);
-		if (mOnHeaderRefreshListener != null) {
-			mOnHeaderRefreshListener.onHeaderRefresh(this);
+		if(isHeadRefresh){
+			mHeaderState = REFRESHING;
+			setHeaderTopMargin(0);
+			mHeaderImageView.setVisibility(View.GONE);
+			mHeaderImageView.clearAnimation();
+			mHeaderImageView.setImageDrawable(null);
+			mHeaderProgressBar.setVisibility(View.VISIBLE);
+			mHeaderTextView.setText(R.string.pull_to_refresh_refreshing_label);
+			if (mOnHeaderRefreshListener != null) {
+				mOnHeaderRefreshListener.onHeaderRefresh(this);
+			}
 		}
 	}
 
@@ -643,6 +648,14 @@ public class PullToRefreshView extends LinearLayout {
 
 	public void setFooterRefresh(boolean isFooterRefresh) {
 		this.isFooterRefresh = isFooterRefresh;
+	}
+
+	public boolean isHeadRefresh() {
+		return isHeadRefresh;
+	}
+
+	public void setHeadRefresh(boolean isHeadRefresh) {
+		this.isHeadRefresh = isHeadRefresh;
 	}
 
 }

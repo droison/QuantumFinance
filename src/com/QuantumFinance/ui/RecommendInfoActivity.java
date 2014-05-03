@@ -1,15 +1,8 @@
 package com.QuantumFinance.ui;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +27,6 @@ import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.DpSpDip2Px;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -107,6 +99,12 @@ public class RecommendInfoActivity extends BaiduMTJActivity {
 				rib = (RecommendInfoBase) msg.obj;
 				if (rib == null)
 					return;
+				if (!rib.isStatus()) {
+					Toast.makeText(RecommendInfoActivity.this, "该产品已不存在", Toast.LENGTH_SHORT).show();
+					finish();
+					return;
+				}
+				rib.setTotal_money(rib.getTotal_money().replace("￥", ""));
 				recommendinfo_deadline.setText(rib.getDeadline() + "个月");
 				recommendinfo_eair.setText(rib.getEair());
 				recommendinfo_schedule.setText(rib.getSchedule());
@@ -172,10 +170,10 @@ public class RecommendInfoActivity extends BaiduMTJActivity {
 		PackageManager pm = getPackageManager();
 		Intent intent = new Intent();
 		intent = pm.getLaunchIntentForPackage(packageName);
-		if(intent==null){
+		if (intent == null) {
 			throw new NullPointerException();
-		}else{
-			
+		} else {
+			startActivity(intent);
 		}
 	}
 

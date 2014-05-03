@@ -26,7 +26,7 @@ public class PostData implements Runnable {
 	private Handler mHandler;
 	private String url;
 	private Object obj;
-	private int type; // type =1 评论 2为注册 3登录
+	private int type; // type =1 评论 2为注册 3登录 4为社交登录
 	private String TAG = "PostData";
 
 	public PostData(Context mContext, Handler mHandler, Object obj, int type) {
@@ -41,6 +41,9 @@ public class PostData implements Runnable {
 			break;
 		case 3:
 			this.url = AppConstants.HTTPURL.login;
+			break;
+		case 4:
+			this.url = AppConstants.HTTPURL.socialLogin;
 			break;
 		default:
 			break;
@@ -75,8 +78,15 @@ public class PostData implements Runnable {
 			hre = HTTP.postByHttpUrlConnection(url, obj);
 		}
 		switch (hre.getHttpResponseCode()) {
+		case 201:
+			// 此处为注册的问题
+			mHandler.sendEmptyMessage(AppConstants.HANDLER_MESSAGE_NULL);
+			break;
 		case 422:
-		case 2:
+			// 此处为注册的问题
+			mHandler.sendEmptyMessage(AppConstants.HANDLER_MESSAGE_NULL);
+			break;
+		case 500:
 			// 此处为注册的问题
 			mHandler.sendEmptyMessage(AppConstants.HANDLER_MESSAGE_NULL);
 			break;
@@ -96,6 +106,10 @@ public class PostData implements Runnable {
 				case 3:
 					LoginOrRegResult.Login login = JSON.parseObject(json, LoginOrRegResult.Login.class);
 					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, login));
+					break;
+				case 4:
+					LoginOrRegResult.Login login2 = JSON.parseObject(json, LoginOrRegResult.Login.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, login2));
 					break;
 				default:
 					break;

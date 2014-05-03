@@ -20,7 +20,7 @@
 
     <!-- 应用主要 -->
 
-    <string name="app_name">量子财经</string>
+    <string name="app_name">财赋</string>
     <string name="offline_text1">网络不给力呀</string>
     <string name="offline_text2">请检查网络连接</string>
     <string name="pull_to_refresh_pull_label">下拉刷新</string>

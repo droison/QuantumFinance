@@ -82,7 +82,7 @@ public class PaperListFragment extends BaiduMTJFragment implements PullToRefresh
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				lp.setMargins(10, 10, 10, 0);
 				
-				adapter = new PaperAdapter(paperList, parentActivity);
+				adapter = new PaperAdapter(paperList, parentActivity,null);
 				int count = adapter.getCount();
 				for (int i = 0; i < count; i++) {
 					View v = adapter.getDropDownView(i, null, null);
