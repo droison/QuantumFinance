@@ -327,7 +327,7 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 				} else if (type == 2 && str.length() != 11) {
 					Toast.makeText(SetActivity.this, "手机号输入不正确", Toast.LENGTH_SHORT).show();
 				} else if (type == 3 && str.length() < 8) {
-					Toast.makeText(SetActivity.this, "密码应当大于8位", Toast.LENGTH_SHORT).show();
+					Toast.makeText(SetActivity.this, "密码至少需要8位", Toast.LENGTH_SHORT).show();
 				} else if (type == 4 && !StringUtil.checkEmail(str)) {
 					Toast.makeText(SetActivity.this, "请输入正确的邮箱地址", Toast.LENGTH_SHORT).show();
 				} else {
