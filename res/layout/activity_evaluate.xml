@@ -46,6 +46,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="evaSubmit"
                 android:background="@drawable/title_two_submit" />
         </LinearLayout>
     </RelativeLayout>
@@ -184,7 +185,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:hint="请输入您的年收入"
+                        android:hint="年收入（万元）"
+                        android:inputType="number"
                         android:textColor="@color/set_text2"
                         android:textSize="15sp" />
                 </RelativeLayout>

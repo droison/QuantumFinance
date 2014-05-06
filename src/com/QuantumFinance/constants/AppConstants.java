@@ -79,7 +79,8 @@ public class AppConstants {
 																								// password
 		public static final String lostPwd = serverIP + "/users/password.json";// POST
 																				// user[email]
-		public static final String socialLogin = serverIP + "/terminal_interface/sessions/openid_oauth.json";//post 
+		public static final String socialLogin = serverIP + "/terminal_interface/sessions/openid_oauth.json";//post
+		public static final String evaluate = serverIP + "/terminal_interface/financial_assessments/modify_fa.json";//post
 	}
 
 }
