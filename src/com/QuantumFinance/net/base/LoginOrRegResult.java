@@ -8,12 +8,39 @@ public class LoginOrRegResult {
 		private String name;
 		private String avatar;
 		private String email;
+		private Integer mobile_phone;
 		private String authentication_token;
 		private Date last_login_time;
 		private boolean weibo;
 		private boolean qq;
 		private String sex;
 		private String message;
+		private boolean status;
+		private String financial_assessment;
+
+		public String getFinancial_assessment() {
+			return financial_assessment;
+		}
+
+		public void setFinancial_assessment(String financial_assessment) {
+			this.financial_assessment = financial_assessment;
+		}
+
+		public Integer getMobile_phone() {
+			return mobile_phone;
+		}
+
+		public void setMobile_phone(Integer mobile_phone) {
+			this.mobile_phone = mobile_phone;
+		}
+
+		public boolean isStatus() {
+			return status;
+		}
+
+		public void setStatus(boolean status) {
+			this.status = status;
+		}
 
 		public String getSex() {
 			return sex;

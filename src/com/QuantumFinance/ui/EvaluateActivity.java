@@ -6,7 +6,6 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
 import com.QuantumFinance.db.DbAccount;
 import com.QuantumFinance.net.PostData;
-import com.QuantumFinance.net.base.LoginOrRegResult;
 import com.QuantumFinance.net.base.PostEva;
 import com.QuantumFinance.ui.adapter.EvaluateAdapter;
 import com.QuantumFinance.util.DialogUtil;
@@ -14,6 +13,7 @@ import com.QuantumFinance.util.DialogUtil;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +42,11 @@ public class EvaluateActivity extends BaiduMTJActivity {
 	private DbAccount account;
 	private AccountDAO accountDAO;
 	private DialogUtil dialogUtil;
+	
+	private SharedPreferences sp;
+	private SharedPreferences.Editor editor;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +56,10 @@ public class EvaluateActivity extends BaiduMTJActivity {
 	}
 
 	private void setUpView() {
+		sp = getSharedPreferences("evaluate", 0);
+		editor = sp.edit();
+		
+		
 		eva_layout1 = (RelativeLayout) this.findViewById(R.id.eva_layout1);
 		eva_layout2 = (RelativeLayout) this.findViewById(R.id.eva_layout2);
 		eva_layout3 = (RelativeLayout) this.findViewById(R.id.eva_layout3);
@@ -77,10 +86,13 @@ public class EvaluateActivity extends BaiduMTJActivity {
 		eva_linear2.addView(getExpandView(strArray5, eva_text6), 7);
 		eva_linear2.addView(getExpandView(strArray6, eva_text7), 10);
 
-		eva_text4.setText(strArray3[0]);
-		eva_text5.setText(strArray4[0]);
-		eva_text6.setText(strArray5[0]);
-		eva_text7.setText(strArray6[0]);
+		eva_text1.setText(sp.getString("text1", "请输入您的姓名"));
+		eva_text2.setText(sp.getString("text2", "请输入您的职业"));
+		eva_text3.setText(sp.getString("text3", "年收入（万元）"));
+		eva_text4.setText(sp.getString("text4",strArray3[0]));
+		eva_text5.setText(sp.getString("text5",strArray4[0]));
+		eva_text6.setText(sp.getString("text6",strArray5[0]));
+		eva_text7.setText(sp.getString("text7",strArray6[0]));
 		
 		accountDAO = new AccountDAO(this);
 		account = accountDAO.getAccount();
@@ -89,7 +101,7 @@ public class EvaluateActivity extends BaiduMTJActivity {
 			startActivity(toLogin);
 			finish();
 			}
-		dialogUtil = new DialogUtil();
+		dialogUtil = new DialogUtil();	
 	}
 
 	private LinearLayout getExpandView(String[] strs, final TextView textView) {
@@ -280,6 +292,14 @@ public class EvaluateActivity extends BaiduMTJActivity {
 		}else if(TextUtils.isEmpty(annual_income)){
 			Toast.makeText(this, "年收入不能为空", Toast.LENGTH_SHORT).show();
 		}else{
+			editor.putString("text1", name);
+			editor.putString("text2", professional);
+			editor.putString("text3", annual_income);
+			editor.putString("text4", fxph);
+			editor.putString("text5", tzph);
+			editor.putString("text6", zczk);
+			editor.putString("text7", jtzk);
+			editor.commit();
 			PostEva pe = new PostEva(account.getToken(), name, professional, annual_income, fxph, tzph, zczk, jtzk);
 			ThreadExecutor.execute(new PostData(this, mHandler, pe, 5));
 			dialogUtil.showProgressDialog(this, "评估中，请稍等...");

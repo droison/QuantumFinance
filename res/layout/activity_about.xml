@@ -152,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/about_phone"
                 android:textColor="@color/grey"
                 android:textSize="14sp" />

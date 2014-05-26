@@ -62,7 +62,7 @@ public class UpdateHandler extends Handler {
 		case AppConstants.HANDLER_VERSION_UPDATE:
 			CheckVersionBase cvb = (CheckVersionBase) mes.obj;
 			final String downloadUrl = cvb.getUrl();
-			appname = AppConstants.APP_FILE_NAME + cvb.getVersion() + ".apk";
+			appname = AppConstants.APP_FILE_NAME +"-" + cvb.getVersion() + ".apk";
 
 			AlertDialog.Builder builer = new Builder(context);
 			builer.setTitle("升级提示");

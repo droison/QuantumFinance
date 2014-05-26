@@ -116,6 +116,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/item_paper_title"
                     android:paddingTop="5dp"
+                    android:maxLines="2"
                     android:text="fffffssdsd"
                     android:textColor="@color/recommendinfo_text1"
                     android:textSize="14sp" />

@@ -1,6 +1,7 @@
 package com.QuantumFinance.db;
 
 import com.QuantumFinance.constants.AppConstants;
+import com.QuantumFinance.net.base.LoginOrRegResult.Login;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,6 +34,24 @@ public class AccountDAO {
 		db.insert("account", null, values);
 	}
 
+	public void save(Login login) {
+		delete();
+		SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("id", 2014);
+		values.put("username", login.getName() == null ? "" : login.getName());
+		values.put("token", login.getAuthentication_token() == null ? "" : login.getAuthentication_token());
+		values.put("face", login.getAvatar() == null ? "" : login.getAvatar());
+		values.put("phone", login.getMobile_phone() == null ? "" : login.getMobile_phone()+"");
+		values.put("email", login.getEmail() == null ? "" : login.getEmail());
+		values.put("sex", login.getSex() == null ? "男" : login.getSex());
+		values.put("userid", login.getId()+"");
+//		values.put("bind_weibo", account.isBind_weibo() ? 1 : 0);
+//		values.put("bind_qq", account.isBind_qq() ? 1 : 0);
+		db.insert("account", null, values);
+	}
+
+	
 	// 判断用户是否存在 为空则不存在
 	public DbAccount getAccount() {
 		SQLiteDatabase db = dbOpenHelper.getReadableDatabase();

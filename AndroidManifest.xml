@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.QuantumFinance.ui"
-    android:versionCode="9"
-    android:versionName="0.9" >
+    android:versionCode="15"
+    android:versionName="1.0正式版" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -74,25 +74,38 @@
             android:name="BaiduMobAd_WIFI_LOCATION"
             android:value="true" />
 
-        <activity android:name="com.QuantumFinance.ui.MainActivity" >
+        <activity android:name="com.QuantumFinance.ui.MainActivity"
+            
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.QuantumFinance.ui.RecommendInfoActivity" />
-        <activity android:name="com.QuantumFinance.ui.PaperInfoActivity" />
-        <activity android:name="com.QuantumFinance.ui.LoginActivity" />
-        <activity android:name="com.QuantumFinance.ui.LostPwdActivity" />
-        <activity android:name="com.QuantumFinance.ui.RegisterActivity" />
-        <activity android:name="com.QuantumFinance.ui.SetActivity" />
-        <activity android:name="com.QuantumFinance.ui.AboutActivity" />
+        <activity android:name="com.QuantumFinance.ui.RecommendInfoActivity" 
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.QuantumFinance.ui.ChangePwdActivity" 
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.QuantumFinance.ui.PaperInfoActivity" 
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.QuantumFinance.ui.LoginActivity" 
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.QuantumFinance.ui.LostPwdActivity" 
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.QuantumFinance.ui.RegisterActivity" 
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.QuantumFinance.ui.SetActivity" 
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.QuantumFinance.ui.AboutActivity" 
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.QuantumFinance.ui.CommentActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyActivityDialog" >
         </activity>
-        <activity android:name="com.QuantumFinance.ui.TextViewActivity" />
+        <activity android:name="com.QuantumFinance.ui.TextViewActivity" 
+            android:screenOrientation="portrait"/>
 
         <!-- 为了授权操作可以顺利完成，需要在application下注册下面的Activity -->
         <activity
@@ -108,10 +121,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.QuantumFinance.ui.EvaluateActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_evaluate_" >
         </activity>
         <activity
             android:name="com.QuantumFinance.ui.ICollectActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_icollect" >
         </activity>
     </application>

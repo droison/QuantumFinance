@@ -73,7 +73,7 @@ public class CommentAdapter extends BaseAdapter {
 			comment_username.setText(cb.getUser_name() + " @" + cb.getTo_user_name());
 		}
 		comment_content.setText(cb.getContent());
-		imageLoader.displayImage(AppConstants.HTTPURL.serverIP + cb.getUser_avata(), comment_icon, options, displayListener);
+		imageLoader.displayImage(AppConstants.HTTPURL.serverIP + cb.getUser_avatar(), comment_icon, options, displayListener);
 
 		converView.setOnClickListener(new OnClickListener() {
 

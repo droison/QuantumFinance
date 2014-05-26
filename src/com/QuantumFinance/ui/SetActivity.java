@@ -7,9 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.QuantumFinance.BaiduMTJ.BaiduMTJActivity;
+import com.QuantumFinance.Thread.ThreadExecutor;
 import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.db.AccountDAO;
 import com.QuantumFinance.db.DbAccount;
+import com.QuantumFinance.net.PostData;
+import com.QuantumFinance.net.base.LoginOrRegResult;
+import com.QuantumFinance.net.base.PostUpdateInfo;
 import com.QuantumFinance.util.DialogUtil;
 import com.QuantumFinance.util.StringUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -159,7 +163,9 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 				showInfoUpdateAlert(2);
 			break;
 		case R.id.set_pwdlayout:
-			showInfoUpdateAlert(3);
+			Intent toChangePwd = new Intent(SetActivity.this,ChangePwdActivity.class);
+			toChangePwd.putExtra("token", account.getToken());
+			startActivity(toChangePwd);
 			break;
 		case R.id.set_snslayout:
 			if (!account.isBind_weibo() || !account.isBind_qq())
@@ -196,10 +202,16 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 
 	private Handler infoUpdateHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			dialogUtil.dismissDownloadDialog();
+			dialogUtil.dismissProgressDialog();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				// 成功则保存并：setUserInfo();
+				LoginOrRegResult.Login result = (LoginOrRegResult.Login) msg.obj;
+				if(result.isStatus()){
+				    accountDAO.save(result);
+				    setUserInfo();
+				}else
+				dialogUtil.showToast(SetActivity.this, result.getMessage());
 				break;
 			case AppConstants.HANDLER_MESSAGE_NONETWORK:
 				dialogUtil.showNoNetWork(SetActivity.this);
@@ -322,6 +334,8 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 		dlg = new AlertDialog.Builder(SetActivity.this).setView(textEntryView).setPositiveButton("确认", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String str = infoupdate_content.getText().toString();
+				PostUpdateInfo pui = new PostUpdateInfo();
+				pui.setToken(account.getToken());
 				if (TextUtils.isEmpty(str)) {
 					Toast.makeText(SetActivity.this, "不能为空", Toast.LENGTH_SHORT).show();
 				} else if (type == 2 && str.length() != 11) {
@@ -332,7 +346,21 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 					Toast.makeText(SetActivity.this, "请输入正确的邮箱地址", Toast.LENGTH_SHORT).show();
 				} else {
 					dialogUtil.showProgressDialog(SetActivity.this, "正在更新");
+					switch (type) {
+					case 1:
+						pui.setName(str);
+						break;
+					case 2:
+						pui.setMobile_phone(str);
+						break;
+					case 4:
+						pui.setEmail(str);
+						break;
+					default:
+						break;
+					}
 					// 此处用来更新数据
+					ThreadExecutor.execute(new PostData(SetActivity.this, infoUpdateHandler, pui, 6));
 				}
 
 			}
@@ -406,6 +434,10 @@ public class SetActivity extends BaiduMTJActivity implements OnClickListener {
 				Bitmap bm = data.getParcelableExtra("data");
 				dialogUtil.showProgressDialog(SetActivity.this, "正在修改");
 				// 处理图片上传
+				PostUpdateInfo pui = new PostUpdateInfo();
+				pui.setToken(account.getToken());
+				pui.setAvatar_file(bm);
+				ThreadExecutor.execute(new PostData(SetActivity.this, infoUpdateHandler, pui, 7));
 				break;
 			}
 			super.onActivityResult(requestCode, resultCode, data);

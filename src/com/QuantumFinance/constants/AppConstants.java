@@ -13,7 +13,7 @@ public class AppConstants {
 
 	public static final String BODY_END = "</body>";
 
-	public static final String APP_FILE_NAME = "LzFinance";
+	public static final String APP_FILE_NAME = "caifu";
 	public static final String APP_FILE_PATH = Environment.getExternalStorageDirectory() + "/" + APP_FILE_NAME;
 	public static final String TEMP_HEAD_FILE_PATH = APP_FILE_PATH + "/head.jpg";
 
@@ -41,7 +41,7 @@ public class AppConstants {
 	public interface HTTPURL {
 		public static final String checkVersion = "http://code.taobao.org/svn/versioncontrol/trunk/lzversion";
 
-		public static final String serverIP = "http://42.121.104.18:8089";
+		public static final String serverIP = "http://www.caifuview.com";
 		/**
 		 * 第一页
 		 */
@@ -81,6 +81,8 @@ public class AppConstants {
 																				// user[email]
 		public static final String socialLogin = serverIP + "/terminal_interface/sessions/openid_oauth.json";//post
 		public static final String evaluate = serverIP + "/terminal_interface/financial_assessments/modify_fa.json";//post
+	 public static final String updateInfo = serverIP + "/terminal_interface/users/modify_user.json";//POST  multipart/form-data token avatar_file name mobile_phone email
+public static final String changePwd = serverIP + "/terminal_interface/users/modify_password.json";
 	}
 
 }

@@ -15,10 +15,19 @@ public class CommentBase implements Serializable{
 	private String content;// "sawevsdawedsaew",
 	private Date created_at; // "2014-03-14T07:55:51Z",
 	private Date updated_at; // "2014-03-14T07:55:51Z",
-	private String user_avata;// : "/avatars/thumb/missing.png"
+	private String user_avatar;// : "/avatars/thumb/missing.png"
 	private String user_name;// "孙汕锟",
 	private String to_user_name;// "",
+	private String to_user_avatar;
 	private String comment_name;// "test"
+
+	public String getTo_user_avatar() {
+		return to_user_avatar;
+	}
+
+	public void setTo_user_avatar(String to_user_avatar) {
+		this.to_user_avatar = to_user_avatar;
+	}
 
 	public String getUser_name() {
 		return user_name;
@@ -100,12 +109,12 @@ public class CommentBase implements Serializable{
 		this.updated_at = updated_at;
 	}
 
-	public String getUser_avata() {
-		return user_avata;
+	public String getUser_avatar() {
+		return user_avatar;
 	}
 
-	public void setUser_avata(String user_avata) {
-		this.user_avata = user_avata;
+	public void setUser_avatar(String user_avatar) {
+		this.user_avatar = user_avatar;
 	}
 
 }

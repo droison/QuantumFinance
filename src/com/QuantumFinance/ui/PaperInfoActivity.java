@@ -46,6 +46,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefreshView.OnFooterRefreshListener, PullToRefreshView.OnHeaderRefreshListener {
 
 	private TextView paperinfo_comment;
+	private TextView paperinfo_praise;
 	private WebView paperinfo_content;
 	private ImageView paperinfo_logo;
 	private TextView paperinfo_time;
@@ -145,9 +146,10 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				pb = (PaperBase) msg.obj;
 				if (pb != null && pb.getId() != 0) {
-					sdf = new SimpleDateFormat("MM-dd hh:mm");
+					sdf = new SimpleDateFormat("MM-dd HH:mm");
 					paperinfo_comment.setText("评论:" + pb.getComments());
-					pb.setContent(pb.getContent().replace("background-color:", ""));
+				    paperinfo_praise.setText("赞:"+pb.getCredit_number());
+					pb.setContent(pb.getContent().replace("background-color:", "bgx-color:"));
 					paperinfo_content.loadDataWithBaseURL(null, new StringBuilder(AppConstants.FONT_START).append(AppConstants.BODY_START).append(pb.getContent()).append(AppConstants.BODY_END).toString(), AppConstants.TEXT_HTML, AppConstants.UTF8, null);
 					paperinfo_content.setBackgroundColor(getResources().getColor(R.color.paperinfo_content_bg));
 					paperinfo_time.setText(sdf.format(pb.getUpdated_at()));
@@ -284,6 +286,7 @@ public class PaperInfoActivity extends BaiduMTJActivity implements PullToRefresh
 		paperinfo_tab_layout4 = (RelativeLayout) this.findViewById(R.id.paperinfo_tab_layout4);
 
 		paperinfo_comment = (TextView) this.findViewById(R.id.paperinfo_comment);
+		paperinfo_praise = (TextView) this.findViewById(R.id.paperinfo_praise);
 		paperinfo_content = (WebView) this.findViewById(R.id.paperinfo_content);
 		paperinfo_time = (TextView) this.findViewById(R.id.paperinfo_time);
 		paperinfo_title = (TextView) this.findViewById(R.id.paperinfo_title);

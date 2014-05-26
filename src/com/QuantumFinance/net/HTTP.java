@@ -127,7 +127,7 @@ public class HTTP {
 	}
 
 	// 上传代码，第一个参数，为要使用的URL，第二个参数，为表单内容，第三个参数为要上传的文件，可以上传多个文件，这根据需要页定
-	public static HttpResponseEntity put(String actionUrl, String token, Bitmap bm) {
+	public static HttpResponseEntity postImage(String actionUrl, String token, Bitmap bm) {
 		DataOutputStream outStream = null;
 		HttpResponseEntity hre = null;
 		InputStream input = null;
@@ -143,7 +143,7 @@ public class HTTP {
 			conn.setDoInput(true);// 允许输入
 			conn.setDoOutput(true);// 允许输出
 			conn.setUseCaches(false);
-			conn.setRequestMethod("PUT"); // Post方式
+			conn.setRequestMethod("POST"); // Post方式
 			conn.setRequestProperty("connection", "keep-alive");
 			conn.setRequestProperty("Charsert", "UTF-8");
 			conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY);
@@ -153,7 +153,7 @@ public class HTTP {
 			sb.append(PREFIX);
 			sb.append(BOUNDARY);
 			sb.append(LINEND);
-			sb.append("Content-Disposition: form-data; name=\"private_token\"" + LINEND);
+			sb.append("Content-Disposition: form-data; name=\"token\"" + LINEND);
 			sb.append("Content-Type: text/plain; charset=" + CHARSET + LINEND);
 			sb.append("Content-Transfer-Encoding: 8bit" + LINEND);
 			sb.append(LINEND);
@@ -168,7 +168,7 @@ public class HTTP {
 			sb1.append(PREFIX);
 			sb1.append(BOUNDARY);
 			sb1.append(LINEND);
-			sb1.append("Content-Disposition: form-data; name=\"face\"; filename=\"head.jpg\"" + LINEND);
+			sb1.append("Content-Disposition: form-data; name=\"avatar_file\"; filename=\"head.jpg\"" + LINEND);
 			sb1.append("Content-Type: multipart/form-data; charset=" + CHARSET + LINEND);
 			sb1.append(LINEND);
 			outStream.write(sb1.toString().getBytes());
@@ -219,7 +219,8 @@ public class HTTP {
 
 	}
 
-	public static HttpResponseEntity putByHttpUrlConnection(String pathUrl, Object o) {
+	// multipart/form-data  application/json
+	public static HttpResponseEntity post(String pathUrl, Object o,String contentType) {
 
 		HttpResponseEntity hre = new HttpResponseEntity();
 		InputStream input = null;
@@ -235,19 +236,20 @@ public class HTTP {
 			httpConn.setUseCaches(false);// 忽略缓存
 			httpConn.setConnectTimeout(8000); // 抛出ConnectTimeoutException,MalformedURLException这个异常。
 			httpConn.setReadTimeout(8000);
-			httpConn.setRequestMethod("PUT");// 设置URL请求方法
+			httpConn.setRequestMethod("POST");// 设置URL请求方法
 
 			String requestString = JSON.toJSONString(o);
-			byte[] requestStringBytes = requestString.getBytes("utf-8");// 获得数据字节数据，请求数据流的编码，必须和下面服务器端处理请求流的编码一致
-			httpConn.setRequestProperty("Content-length", "" + requestStringBytes.length);
-			httpConn.setRequestProperty("Content-Type", "application/json");
+			Log.e("obj toString", o.toString());
+			byte[] requestBytes = requestString.getBytes();// 获得数据字节数据，请求数据流的编码，必须和下面服务器端处理请求流的编码一致
+			httpConn.setRequestProperty("Content-length", "" + requestBytes.length);
+			httpConn.setRequestProperty("Content-Type", contentType);
 			httpConn.setRequestProperty("Connection", "Keep-Alive");// 维持长连接
 			httpConn.setRequestProperty("Charset", "UTF-8");
 
 			httpConn.setRequestProperty("name", "request");
 
 			OutputStream outputStream = httpConn.getOutputStream(); // 建立输出流，并写入数据
-			outputStream.write(requestStringBytes);
+			outputStream.write(requestBytes);
 			outputStream.close();
 
 			hre.setHttpResponseCode(httpConn.getResponseCode());

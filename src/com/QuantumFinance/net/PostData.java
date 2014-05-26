@@ -10,6 +10,7 @@ import com.QuantumFinance.constants.AppConstants;
 import com.QuantumFinance.net.base.HttpResponseEntity;
 import com.QuantumFinance.net.base.LoginOrRegResult;
 import com.QuantumFinance.net.base.PostCommentBase;
+import com.QuantumFinance.net.base.PostUpdateInfo;
 import com.QuantumFinance.net.base.RegResult;
 import com.QuantumFinance.net.base.Result;
 import com.QuantumFinance.util.StringUtil;
@@ -26,7 +27,7 @@ public class PostData implements Runnable {
 	private Handler mHandler;
 	private String url;
 	private Object obj;
-	private int type; // type =1 评论 2为注册 3登录 4为社交登录 5是理财评估
+	private int type; // type =1 评论 2为注册 3登录 4为社交登录 5是理财评估 6是更新个人信息(JSON) 7为更新头像 8是修改密码
 	private String TAG = "PostData";
 
 	public PostData(Context mContext, Handler mHandler, Object obj, int type) {
@@ -47,6 +48,15 @@ public class PostData implements Runnable {
 			break;
 		case 5:
 			this.url = AppConstants.HTTPURL.evaluate;
+			break;
+		case 6:
+			this.url = AppConstants.HTTPURL.updateInfo;
+			break;
+		case 7:
+			this.url = AppConstants.HTTPURL.updateInfo;
+			break;
+		case 8:
+			this.url = AppConstants.HTTPURL.changePwd;
 			break;
 		default:
 			break;
@@ -77,6 +87,11 @@ public class PostData implements Runnable {
 			params.add(new BasicNameValuePair("comment_id", pcb.getComment_id() + ""));
 			params.add(new BasicNameValuePair("content", pcb.getContent()));
 			hre = HTTP.post(url, params);
+		} else if (type == 7) {
+			PostUpdateInfo pui = (PostUpdateInfo) obj;
+			
+//			hre = HTTP.post(url, params);
+			 hre = HTTP.postImage(url, pui.getToken(), pui.getAvatar_file());
 		} else {
 			hre = HTTP.postByHttpUrlConnection(url, obj);
 		}
@@ -116,6 +131,18 @@ public class PostData implements Runnable {
 					break;
 				case 5:
 					mHandler.sendEmptyMessage(AppConstants.HANDLER_MESSAGE_NORMAL);
+					break;
+				case 6:
+					LoginOrRegResult.Login login3 = JSON.parseObject(json, LoginOrRegResult.Login.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, login3));
+					break;
+				case 7:
+					LoginOrRegResult.Login login4 = JSON.parseObject(json, LoginOrRegResult.Login.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, login4));
+					break;
+				case 8:
+					Result result1 = JSON.parseObject(json, Result.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, result1));
 					break;
 				default:
 					break;
